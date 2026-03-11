@@ -1,0 +1,97 @@
+/* Home.css */
+
+.home-container {
+  width: 900px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* 소개 문구 */
+.home-intro {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* 카드 그리드 */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* 카드 */
+.home-card {
+  padding: 28px;
+  background-color: #020b1a;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px rgba(30, 58, 138, 0.15);
+  text-align: left;
+  text-decoration: none;
+  color: #ffffff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+/* 카드 제목 */
+.home-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #93c5fd;
+}
+
+/* 카드 설명 */
+.home-card p {
+  font-size: 14px;
+  color: #cbd5f5;
+  line-height: 1.5;
+}
+
+/* =========================
+   Mobile Responsive (Home)
+   ========================= */
+@media (max-width: 768px) {
+  .home-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 16px;
+  }
+
+  .home-intro {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .home-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .home-card h3 {
+    font-size: 18px;
+  }
+
+  .home-card p {
+    font-size: 13px;
+  }
+}
+
+/* 모바일에서는 hover 효과 제거 */
+@media (hover: none) {
+  .home-card:hover {
+    transform: none;
+    box-shadow: 0 0 0 1px rgba(30, 58, 138, 0.15);
+  }
+}

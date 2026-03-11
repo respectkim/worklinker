@@ -1,0 +1,63 @@
+/* 전체 레이아웃 */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+
+  /* ✅ Contents.css와 동일한 배경 그라데이션 */
+  background: linear-gradient(
+    135deg,
+    #020617,
+    #020b1a,
+    #020617
+  );
+
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Apple SD Gothic Neo',
+    'Noto Sans KR', sans-serif;
+
+  color: #ffffff;
+}
+
+/* 좌측 프로필 영역 */
+.sidebar {
+  width: 260px;
+  padding: 24px 16px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+
+  /* Contents 카드와 어울리는 톤 */
+  background-color: rgba(2, 11, 26, 0.85);
+  border-right: 1px solid #1e293b;
+}
+
+/* 우측 메인 콘텐츠 */
+.content {
+  flex: 1;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+    padding: 16px;
+  }
+
+  .content {
+    padding: 24px 16px;
+  }
+}

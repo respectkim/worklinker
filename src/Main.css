@@ -1,0 +1,119 @@
+/* 전체 페이지 */
+.pages {
+  min-height: 100vh;
+  min-height: 100svh; /* 추가 부분 */
+  width: 100%;
+  /* background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a); */
+  background: linear-gradient(
+    135deg,
+    #020617,
+    #020b1a,
+    #020617
+  );
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.nav-link {
+  text-decoration: none;   /* ✅ 밑줄 제거 */
+  color: white;
+  font-size: 18px;
+}
+
+.nav-link:hover {
+  color: #60a5fa;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero {
+  max-width: 800px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.highlight {
+  display: block;
+  margin-top: 8px;
+  color: #60a5fa;
+}
+
+.description {
+  font-size: 18px;
+  color: #cbd5f5;
+  margin-bottom: 40px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.btn {
+  text-decoration: none;   /* ✅ 밑줄 제거 */
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #2563eb;
+}
+
+.btn.outline {
+  border: 1px solid #94a3b8;
+  color: white;
+}
+
+.btn.outline:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  font-size: 13px;
+  color: #94a3b8;
+  padding: 24px 0;
+}
