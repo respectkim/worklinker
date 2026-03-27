@@ -1,139 +1,89 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; // 🚨 핵심: useState 추가
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react"; // 닫기 아이콘
 import "./UserProfile.css";
 
 export default function UserProfile({ user }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 모바일 사이드바 상태
   const navigate = useNavigate();
+  
+  // 🚨 1. 팝업(모달)의 열림/닫힘 상태를 관리하는 변수
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const jobInterests = ["IT 개발", "바리스타", "사회복지"];
+  // 🚨 2. 화면에 뿌려줄 더미 교육 데이터 배열
+  const dummyCourses = [
+    { id: 1, title: '시니어 디지털 튜터 양성과정', provider: '서울시 50+ 재단', status: '수강중' },
+    { id: 2, title: '바리스타 2급 실기 특강', provider: '내일배움센터', status: '수강대기' },
+  ];
+
+  const activityScore = user?.mileage || 0;
+  // 기존의 숫자 1 대신, 더미 데이터의 개수를 가져와서 표시합니다.
+  const courseCount = dummyCourses.length; 
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <>
-      {/* 모바일용 상단 헤더 (375px 이하에서 노출) */}
-      <header className="mobile-header">
-        <button className="menu-toggle" onClick={() => setIsSidebarOpen(true)}>
-          ☰
-        </button>
-        <div className="mobile-logo">WorkLinker</div>
-      </header>
-
-      {/* 사이드바 영역 */}
-      <aside className={`sidebar-container ${isSidebarOpen ? "open" : ""}`}>
-                
-
-        <div className="sidebar-top">
-          <div className="welcome-box">
-            <span className="user-status">🌱 씨앗</span>
-            <motion.span 
-              className="clickable-name"
-              style={{cursor:'pointer'}}
-              whileHover={{ scale: 1.05, color: "#60a5fa" }}
-              onClick={() => { setIsModalOpen(true); setIsSidebarOpen(false); }}
-            >
-              {user?.id || "사용자"}
-            </motion.span>님
+      <div className="user-profile">
+        {/* 상단 프로필 헤더 (기존 코드 유지) */}
+        <div className="profile-header">
+          <div className="profile-avatar">
+            {user?.id?.charAt(0).toUpperCase() || "M"}
           </div>
-          <div className="mini-stats">
-            방문 1회 | 0P
+          <div className="user-text-group">
+            <div className="user-id">{user?.id || "사용자"} 님</div>
+            <div className="user-welcome">반가워요! 오늘도 응원합니다.</div>
           </div>
         </div>
 
-        <nav className="sidebar-nav">
-          <div className="nav-section">
-            <h4 className="section-title">주제별 탐색</h4>
-            <ul className="topic-list">
-              {['🌐 전체', '💻 기술/IT', '☕ 서비스/카페', '🤝 복지/상담'].map((text, idx) => (
-                <li key={idx} onClick={() => { navigate(`/contents?topic=${idx}`); setIsSidebarOpen(false); }}>
-                  {text}
+        {/* 정보 섹션 */}
+        <div className="profile-info">
+          <div className="info-line">
+            <span>수강 중인 교육</span>
+            {/* 🚨 3. a 태그 대신 onClick을 사용하여 팝업 상태를 true로 바꿉니다 */}
+            <strong 
+              className="clickable-count" 
+              onClick={() => setIsModalOpen(true)}
+            >
+              {courseCount}개
+            </strong>
+          </div>
+        </div>
+
+        {/* 로그아웃 버튼 (기존 유지) */}
+        <button className="logout-btn" onClick={logout}>로그아웃</button>
+      </div>
+
+      {/* 🚨 4. 팝업(모달) 화면 영역 (isModalOpen이 true일 때만 화면에 나타남) */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          {/* 모달 내부 클릭 시 닫히지 않도록 이벤트 전파(e.stopPropagation) 차단 */}
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>수강 중인 교육 리스트</h3>
+              <button className="close-btn" onClick={() => setIsModalOpen(false)}>
+                <X size={24} color="#cbd5e1" />
+              </button>
+            </div>
+            
+            <ul className="course-list">
+              {dummyCourses.map((course) => (
+                <li key={course.id} className="course-item">
+                  <div className="course-info">
+                    <h4>{course.title}</h4>
+                    <p>{course.provider}</p>
+                  </div>
+                  <span className={`status-badge ${course.status === '수강중' ? 'active' : ''}`}>
+                    {course.status}
+                  </span>
                 </li>
               ))}
             </ul>
           </div>
-
-          <div className="nav-section">
-            <h4 className="section-title">맞춤 취업 정보</h4>
-            <div className="chip-container">
-              {jobInterests.map((interest, idx) => (
-                <button key={idx} className="interest-chip" onClick={() => { navigate(`/contents?search=${interest}`); setIsSidebarOpen(false); }}>
-                  #{interest}
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-      </aside>
-
-      {/* 모바일 사이드바 열렸을 때 배경 어둡게 처리 */}
-      {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)} />}
-
-      {/* 개인정보 모달 (기존 코드 유지) */}
-       {/*  UserProfile.js 내 모달 구조 부분 */ }
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div 
-            className="modal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsModalOpen(false)}
-          >
-            <motion.div 
-              className="modal-content"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="modal-header">
-                <h3>나의 성장 리포트</h3>
-                <p className="modal-subtitle">WorkLinker와 함께한 기록입니다.</p>
-              </div>
-
-              <div className="info-grid">
-                {/* 각 항목은 클릭 시 관련 페이지로 이동하는 버튼 역할을 합니다 */}
-                <motion.div className="info-card" whileHover={{ y: -5 }} onClick={() => navigate("/mileage")}>
-                  <span className="card-icon">🌲</span>
-                  <div className="card-text">
-                    <label>현재 레벨</label>
-                    <p>열매 (3단계)</p>
-                  </div>
-                </motion.div>
-
-                <motion.div className="info-card" whileHover={{ y: -5 }} onClick={() => navigate("/points")}>
-                  <span className="card-icon">💎</span>
-                  <div className="card-text">
-                    <label>보유 포인트</label>
-                    <p>1,250 P</p>
-                  </div>
-                </motion.div>
-
-                <motion.div className="info-card" whileHover={{ y: -5 }}>
-                  <span className="card-icon">📈</span>
-                  <div className="card-text">
-                    <label>총 방문 횟수</label>
-                    <p>24회</p>
-                  </div>
-                </motion.div>
-
-                <motion.div className="info-card" whileHover={{ y: -5 }} onClick={() => navigate("/bookshelf")}>
-                  <span className="card-icon">📚</span>
-                  <div className="card-text">
-                    <label>학습 중인 콘텐츠</label>
-                    <p>12개</p>
-                  </div>
-                </motion.div>
-              </div>
-
-              <div className="modal-footer">
-                <button className="close-action-btn" onClick={() => setIsModalOpen(false)}>확인</button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </>
   );
 }

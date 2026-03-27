@@ -1,0 +1,96 @@
+/* 우측 사이드바 전체 컨테이너 */
+.right-sidebar {
+  width: 100%;
+  min-height: 100%;
+  padding: 10px; /* 여백은 여기서 딱 한 번만 줍니다 */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* 🚨 핵심 2: App.css에서 전염된 '가운데 정렬'을 여기서 끊어냅니다 */
+  text-align: left; 
+}
+
+/* 섹션 제목 스타일 (통일감 강조) */
+.section-title {
+  color: #2f66d8; /* 강조 옐로우 */
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.5px;
+}
+
+/* 링크 리스트 */
+.link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 버튼들 사이를 촘촘하게 */
+  list-style-type: none;
+}
+
+/* 일자리 찾기 버튼 (균형 잡힌 슬림한 디자인) */
+.job-link-button {
+  /* 🚨 핵심 3: 85%가 쏠림 현상을 유발했습니다. 100%로 변경하십시오 */
+  width: 90%; 
+  height: 52px;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+/* Hover 효과: 색상 반전 및 부드러운 강조 */
+.job-link-button:hover {
+  background-color: #3b82f6;
+  border-color: #60a5fa;
+  color: white;
+}
+
+/* 취업 동향 뉴스 리스트 (텍스트 가독성 강화) */
+.news-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  list-style-type: none;
+}
+
+/* 개별 뉴스 링크 (폰트 색상 핵심!) */
+.news-link {
+  color: #f8fafc; /* 가장 읽기 편한 아이보리 화이트 */
+  text-decoration: none; /* 밑줄 제거 (가독성 향상) */
+  font-size: 15px;
+  line-height: 1.6; /* 줄 간격을 넓혀서 읽기 편하게 함 */
+  transition: color 0.2s ease;
+  display: block;
+}
+
+/* 마우스를 올렸을 때 (Hover) */
+.news-link:hover {
+  color: #fde047; /* 제목과 동일한 옐로우로 강조 */
+  text-decoration: underline; /* 호버 시에만 밑줄 표시 */
+}
+
+.news-item {
+  font-size: 14px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  padding-left: 10px;
+  border-left: 3px solid #334155; /* 왼쪽 선으로 뉴스 구분 */
+  cursor: pointer;
+}
+
+.news-item:hover {
+  color: #fde047;
+  border-left-color: #fde047;
+}

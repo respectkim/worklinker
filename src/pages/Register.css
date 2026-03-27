@@ -1,87 +1,138 @@
-.page {
+* { box-sizing: border-box; }
+
+.register-page {
+  background-color: #0f172a;
   min-height: 100vh;
-  width: 100%;
-  background: linear-gradient(
-    135deg,
-    #020617,
-    #020b1a,
-    #020617
-  );
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Apple SD Gothic Neo',
-    'Noto Sans KR', sans-serif;
-  color: #ffffff;
+  padding: 40px 20px;
+  color: #f1f5f9;
 }
 
-/* 카드 컨테이너 */
-.form-card {
-  width: 360px;
-  padding: 40px 32px;
-  background-color: #020b1a;
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  box-shadow: 0 0 0 1px rgba(30, 58, 138, 0.15);
-}
-
-/* 제목 */
-.member {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 28px;
-  color: #93c5fd;
-  letter-spacing: -0.02em;
-}
-
-/* 입력창 */
-.form-card input,
-.form-card textarea {
-  width: 90%;
-  padding: 12px 14px;
-  margin-bottom: 14px;
-  background-color: #020617;
-  border: 1px solid #1e293b;
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-}
-
-.form-card input::placeholder,
-.form-card textarea::placeholder {
-  color: #94a3b8;
-}
-
-.form-card input:focus,
-.form-card textarea:focus {
-  border-color: #3b82f6;
-}
-
-.form-card textarea {
-  resize: none;
-  height: 90px;
-}
-
-/* 버튼 */
-.form-card button {
+.register-container {
   width: 100%;
-  margin-top: 10px;
-  padding: 14px;
-  background-color: #1e3a8a;
-  border: 1px solid #3b82f6;
+  max-width: 650px;
+  background-color: #1e293b;
+  padding: 30px;
   border-radius: 12px;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border: 1px solid #334155;
 }
 
-.form-card button:hover {
-  background-color: #1e40af;
+.title { text-align: center; color: #fde047; margin-bottom: 30px; font-size: 28px; font-weight: 800; }
+
+.register-form { display: flex; flex-direction: column; gap: 20px; }
+
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group label { font-weight: bold; font-size: 16px; }
+
+.register-container input,
+.register-container select{
+  width: 100%;
+  padding: 12px;
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  color: white;
 }
+
+/* 가로 정렬 라인 */
+.ssn-row, .phone-row, .dual-row, .email-row, .zipcode-row {
+  display: flex; gap: 10px; align-items: center;
+}
+
+.ssn-back { display: flex; align-items: center; gap: 8px; flex: 1; }
+.ssn-digit { width: 50px !important; text-align: center; }
+.dots { font-size: 18px; color: #94a3b8; letter-spacing: 3px; }
+.carrier-select { width: 120px; }
+
+/* 🕹️ [수정] 관심 직무 분야 강조 스타일 */
+.job-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 19px !important;
+  border-left: 4px solid #fde047;
+  padding-left: 12px;
+  color: #ffffff;
+}
+
+.highlight-text {
+  color: #fde047;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.job-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: -5px;
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.job-item {
+  background-color: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  padding: 15px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.job-item.active {
+  border-color: #fde047;
+  background-color: rgba(253, 224, 71, 0.15);
+  box-shadow: 0 0 10px rgba(253, 224, 71, 0.2);
+}
+
+.job-icon { font-size: 30px; margin-bottom: 5px; }
+.job-text { font-size: 13px; color: #cbd5e1; text-align: center; font-weight: 600; }
+.job-item.active .job-text { color: #fde047; }
+
+/* 약관 영역 (이미지2 처럼 정렬 고정) */
+.terms-container {
+  background-color: #0f172a;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.term-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px;
+  padding: 10px 0;
+  cursor: pointer;
+  color: #f1f5f9;
+}
+
+.term-item input[type="checkbox"] {
+  width: 20px; height: 20px; flex-shrink: 0;
+}
+
+.main-term { font-weight: bold; font-size: 17px; }
+.term-divider { height: 1px; background-color: #334155; margin: 5px 0 10px 0; }
+.star { color: #10b981; font-weight: bold; margin-left: 5px; }
+
+/* 공통 버튼 */
+.btn-small, .btn-search {
+  padding: 10px 15px; background-color: #334155; color: white; border-radius: 6px; cursor: pointer; white-space: nowrap;
+}
+.btn-search { background-color: #2563eb; border: none; font-weight: bold; }
+
+.divider { margin: 25px 0; border: 0; border-top: 1px solid #334155; }
+
+.btn-submit {
+  width: 100%; padding: 18px; background-color: #fde047; color: #0f172a;
+  border: none; border-radius: 8px; font-size: 20px; font-weight: 800; cursor: pointer;
+}
+
+@media (max-width: 500px) { .job-grid { grid-template-columns: repeat(3, 1fr); } }

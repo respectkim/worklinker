@@ -1,0 +1,55 @@
+/* 달력 전체 컨테이너 */
+.calendar-container {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+  color: #f1f5f9;
+}
+
+/* 년/월 헤더 */
+.calendar-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* 요일 및 날짜 그리드 (핵심 부분!) */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7열로 나눔 */
+  gap: 5px;
+  text-align: center;
+}
+
+/* 요일 스타일 (일~토) */
+.day-of-week {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: bold;
+  padding-bottom: 8px;
+}
+
+/* 개별 날짜 */
+.calendar-day {
+  font-size: 14px;
+  padding: 8px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calendar-day:hover {
+  background-color: #334155;
+}
+
+/* 하단 상태 메시지 */
+.calendar-status {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #334155;
+  color: #3b82f6;
+  font-size: 12px;
+  text-align: center;
+}

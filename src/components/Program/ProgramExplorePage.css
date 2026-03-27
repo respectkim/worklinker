@@ -1,0 +1,303 @@
+/* ProgramExplorePage.css */
+
+.explore-page-container {
+  padding: 30px 40px;
+  background-color: #f8fafc; /* 사이드바와 구분되는 메인 배경색 */
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* 헤더 영역 */
+.explore-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.user-context h2 {
+  font-size: 28px;
+  color: #0f172a; /* LeftSidebar logo와 동일한 색상 */
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.user-context p {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.highlight-text {
+  color: #2563eb; /* 블루 포인트 */
+  font-weight: 700;
+}
+
+.section-title {
+  margin-bottom: 20px;
+}
+
+.section-title h3 {
+  font-size: 20px;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.section-title .subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: auto;
+  margin-bottom: 4px;
+  padding-left: 1px;
+}
+
+/* 🚨 그리드 레이아웃 */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* 카드 디자인 (유리 질감 및 호버 효과) */
+.program-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.program-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1); /* 블루톤 섀도우 */
+  border-color: #bfdbfe;
+}
+
+/* 카드 상단 배지 */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.match-badge {
+  background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%); /* LeftSidebar active 버튼과 동일 */
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cost-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cost-badge.free {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.cost-badge.paid {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* 카드 콘텐츠 */
+.program-title {
+  font-size: 18px;
+  color: #0f172a;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  font-weight: 700;
+  
+  /* 두 줄 말줄임표 처리 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.program-info {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* 키워드 태그 */
+.keyword-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-grow: 1; /* 버튼을 아래로 밀어내기 위함 */
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center; /* 1차 방어: 플렉스박스 수직 중앙 정렬 */
+  justify-content: center; /* 텍스트 가로 중앙 정렬 */
+  height: 26px; 
+  line-height: 26px; /* 🚨 핵심: height와 동일한 값을 주어 텍스트를 수직 정중앙에 강제 고정 */
+  padding: 0 10px;
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+  box-sizing: border-box; /* 2차 방어: 패딩 때문에 지정한 높이가 틀어지는 것 방지 */
+}
+
+/* 카드 버튼 */
+.card-action {
+  margin-top: auto;
+}
+
+.detail-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detail-btn:hover {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* 필터 박스 영역 */
+.filter-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 배치 */
+  gap: 20px 24px; /* 세로 간격 20px, 가로 간격 24px */
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* select와 input(date) 스타일 통일 */
+.filter-group select,
+.filter-group input[type="date"] {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  color: #1e293b;
+  width: 100%; /* 부모 너비에 꽉 차게 */
+  box-sizing: border-box;
+  font-family: inherit;
+  background-color: #fff;
+}
+
+/* 검색 버튼을 하단에 정렬하기 위한 트릭 */
+.filter-group.button-group {
+  justify-content: flex-end; /* 버튼을 박스 맨 아래로 밀어냄 */
+}
+
+.search-btn {
+  width: 100%;
+  padding: 10px 24px;
+  background-color: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+  transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+  background-color: #1e293b;
+}
+
+/* 🚨 정렬 및 검색 결과 헤더 영역 */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+
+.results-count {
+  font-size: 15px;
+  color: #475569;
+}
+
+.results-count strong {
+  color: #2563eb;
+}
+
+.sort-select {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  background-color: #f8fafc;
+  cursor: pointer;
+  outline: none;
+}
+
+.sort-select:hover {
+  background-color: #f1f5f9;
+}
+
+/* 검색 섹션의 렌더링 방향을 세로(Column)로 강제 고정 */
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 제목, 필터, 결과창 사이의 세로 여백 */
+  width: 100%;
+}
+
+.empty-state {
+  width: 100%; /* 부모 컨테이너의 너비를 100% 차지하여 줄바꿈 유도 */
+  box-sizing: border-box; /* 패딩이 너비를 초과하지 않도록 방어 */
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  margin-top: 10px; /* 필터 박스와의 추가 간격 */
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  color: #2563eb;
+  font-weight: 600;
+}

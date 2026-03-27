@@ -1,237 +1,213 @@
-/* 사이드바 전체 배경 */
-.sidebar-container {
-  width: 260px;
-  height: 100vh;
-  background-color: #0f172a;
-  padding: 24px;
-  color: #f1f5f9;
-}
-
-/* 주제별 탐색 리스트 스타일 */
-.topic-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.topic-list li {
-  padding: 12px 16px;
-  border-radius: 12px;
-  cursor: pointer; /* 손가락 모양 강제 */
-  transition: background 0.2s ease;
-  color: #cbd5e1;
-  font-size: 15px;
-}
-
-.topic-list li:hover {
-  background-color: #1e293b;
-  color: #ffffff;
-}
-
-/* 맞춤 취업 정보 Chip 스타일 */
-.chip-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 8px;
-}
-
-.interest-chip {
-  background-color: #1e293b;
+.user-profile {
+  width: 90%;
+  background-color: #1e293b; /* 사이드바 배경보다 살짝 밝은 카드색 */
   border: 1px solid #334155;
-  color: #94a3b8;
-  padding: 8px 16px;
-  border-radius: 20px; /* 둥근 칩 형태 */
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.interest-chip:hover {
-  color: #ffffff;
-  border-color: #3b82f6;
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+/* 사용자 아이디 및 환영 문구 */
+.user-id {
+  font-size: 20px; /* 폰트 확대 */
+  font-weight: 700;
+  color: #f1f5f9;
+  text-align: left;
 }
 
-/* 섹션 타이틀 가독성 개선 */
-.section-title {
+.user-welcome {
   font-size: 12px;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 24px 0 12px 8px;
+  color: #3b82f6; /* 포인트 컬러 */
+  margin-top: 4px;
 }
 
-/* 모달 배경 */
+/* 정보 라인 (수강 중인 교육, 활동 포인트 등) */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid #334155;
+  padding-top: 15px;
+}
+
+.info-line {
+  font-size: 15px;
+  color: #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-line strong {
+  color: #ffffff;
+}
+
+/* 로그아웃 버튼 */
+.logout-btn {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #334155;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ef4444; /* 마우스 올리면 경고 의미의 빨간색 */
+  border-color: #ef4444;
+  color: white;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 아바타와 이름 사이 간격 */
+}
+
+.profile-avatar {
+  width: 48px;
+  height: 48px;
+  background-color: #3b82f6; /* 포인트 블루 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.user-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* UserProfile.css 맨 아래 추가 */
+
+/* 클릭 가능한 숫자 디자인 */
+.clickable-count {
+  color: #3b82f6;
+  cursor: pointer;
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.clickable-count:hover {
+  color: #60a5fa;
+}
+
+/* 팝업(모달) 배경 - 화면 전체를 어둡게 덮음 */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.75); /* 배경을 어둡게 하여 모달에 집중 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* 불투명 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999; /* 화면 최상단으로 끌어올림 */
+  backdrop-filter: blur(2px); /* 배경을 살짝 흐리게 처리 */
 }
 
-/* 모달 본체 */
+/* 팝업 창 본체 */
 .modal-content {
-  background: #1e293b;
-  width: 90%;
-  max-width: 450px;
-  border-radius: 24px;
-  padding: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background-color: #1e293b;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
+/* 팝업 헤더 (제목과 닫기 버튼) */
 .modal-header {
-  text-align: center;
-  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #334155;
 }
 
 .modal-header h3 {
-  font-size: 22px;
+  margin: 0;
   color: #f8fafc;
-  margin-bottom: 8px;
+  font-size: 18px;
 }
 
-.modal-subtitle {
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-/* 정보 카드 그리드 */
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.info-card {
-  background: #0f172a;
-  padding: 16px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer; /* 손가락 모양 */
-  border: 1px solid transparent;
-  transition: all 0.2s;
-}
-
-.info-card:hover {
-  border-color: #3b82f6;
-  background: #1e293b;
-}
-
-.card-icon {
-  font-size: 24px;
-}
-
-.card-text label {
-  display: block;
-  font-size: 12px;
-  color: #64748b;
-  margin-bottom: 2px;
-}
-
-.card-text p {
-  font-size: 16px;
-  font-weight: 600;
-  color: #e2e8f0;
-}
-
-/* 하단 확인 버튼 */
-.modal-footer {
-  margin-top: 32px;
-  display: flex;
-  justify-content: center;
-}
-
-.close-action-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 12px 48px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.close-action-btn:hover {
-  background: #2563eb;
-}
-
-/* --- 모바일 대응 (반응형) --- */
-.mobile-header {
-  display: none; /* PC에서는 숨김 */
-  position: fixed;
-  top: 0; left: 0; width: 100%;
-  height: 60px;
-  background-color: #0f172a;
-  padding: 0 20px;
-  align-items: center;
-  z-index: 50;
-  border-bottom: 1px solid #1e293b;
-}
-
-@media (max-width: 768px) {
-  .mobile-header {
-    display: flex; /* 모바일에서 노출 */
-  }
-
-  .sidebar-container {
-    position: fixed;
-    top: 0;
-    left: -280px; /* 화면 밖으로 숨김 */
-    width: 280px;
-    height: 100vh;
-    z-index: 100;
-    transition: left 0.3s ease; /* 부드럽게 밀려나옴 */
-    box-shadow: none;
-  }
-
-  .sidebar-container.open {
-    left: 0; /* 화면 안으로 들어옴 */
-    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
-  }
-
-  .mobile-close-btn {
-    display: block;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  .sidebar-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 90;
-  }
-}
-
-.menu-toggle {
+.close-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 28px;
   cursor: pointer;
-  margin-right: 15px;
+  padding: 4px;
+  display: flex;
+  transition: transform 0.2s;
 }
 
-.mobile-logo {
-  font-weight: bold;
-  font-size: 20px;
-  color: #3b82f6;
+.close-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 리스트 아이템 디자인 */
+.course-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0f172a;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.course-info h4 {
+  margin: 0 0 6px 0;
+  color: #f1f5f9;
+  font-size: 15px;
+}
+
+.course-info p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* 뱃지 디자인 */
+.status-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: #334155;
+  color: #cbd5e1;
+}
+
+.status-badge.active {
+  background-color: #166534;
+  color: #bbf7d0;
+}
+
+/* 모바일 반응형 (PRD 고려) */
+@media (max-width: 768px) {
+  .user-profile {
+    padding: 16px;
+    gap: 12px;
+  }
 }

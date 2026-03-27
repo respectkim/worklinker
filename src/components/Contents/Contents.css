@@ -1,0 +1,192 @@
+/* Contents.css */
+
+.contents-container {
+  /* ✅ 메인 화면 트렌드 섹션 배경 그라데이션 이식 */
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  min-height: 100vh;
+  padding: 80px 40px;
+  font-family: 'pretendard', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 배경 장식 원형 효과 */
+.contents-container::before {
+  content: "";
+  position: absolute;
+  top: -100px; left: -100px;
+  width: 400px; height: 400px;
+  background: rgba(37, 99, 235, 0.05);
+  filter: blur(60px);
+  border-radius: 50%;
+}
+
+.video-search-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 700px;
+  background: #ffffff;
+  border: 1px solid #d6e1ef;
+  border-radius: 20px;
+  padding: 8px 12px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.search-submit-btn {
+  background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+  border: none;
+  border-radius: 15px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-submit-btn:hover { transform: scale(1.05); }
+
+.contents-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contents-main-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.04em;
+}
+
+.sort-dropdown {
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid #d6e1ef;
+  background: #fff;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+}
+
+.contents-grid {
+  display: grid;
+  /* 🚨 팩트 체크: auto-fill 대신 repeat(3, 1fr)을 사용하여 무조건 3단으로 고정합니다. */
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ✅ 카드 스타일: 유리 질감 및 상단 포인트 라인 */
+.content-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+  position: relative;
+}
+
+.content-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #2563eb, #8b5cf6);
+}
+
+.video-thumbnail-box { position: relative; cursor: pointer; aspect-ratio: 16/9; }
+.video-thumbnail-box img { width: 100%; height: 100%; object-fit: cover; }
+
+.fav-star-btn {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: rgba(0,0,0,0.3);
+  border: none; border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10;
+}
+
+.play-icon-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.2);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s;
+}
+.video-thumbnail-box:hover .play-icon-overlay { opacity: 1; }
+
+.video-info-box { padding: 24px; }
+.video-title { 
+  font-size: 18px; font-weight: 700; color: #0f172a; 
+  margin-bottom: 12px; line-height: 1.4; height: 50px; overflow: hidden;
+}
+.channel-name { color: #64748b; font-size: 14px; margin-bottom: 10px; }
+.video-meta { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; }
+
+/* 페이지네이션 */
+.pagination-container {
+  display: flex; justify-content: center; align-items: center; gap: 20px;
+  margin-top: 60px;
+}
+.page-nums { display: flex; gap: 10px; }
+.num-btn {
+  width: 40px; height: 40px; border-radius: 10px; border: 1px solid #d6e1ef;
+  background: #fff; cursor: pointer; transition: 0.2s;
+}
+.num-btn.active { 
+  background: #2563eb; color: #fff; border-color: #2563eb; font-weight: 700;
+}
+
+/* 모달 */
+.video-modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.9); z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+}
+.video-modal-box { width: 90%; max-width: 1000px; aspect-ratio: 16/9; position: relative; }
+.modal-close-x { position: absolute; top: -50px; right: 0; background: none; border: none; cursor: pointer; }
+
+.loader-container { display: flex; justify-content: center; padding: 100px; }
+.spinner { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* 📱 모바일 대응: 화면이 좁아질 때 3단을 유지하면 카드가 너무 작아지므로 
+   태블릿/모바일 환경에 대한 예외 처리가 필요합니다. */
+@media (max-width: 1024px) {
+  .contents-grid {
+    grid-template-columns: repeat(2, 1fr) !important; /* 태블릿은 2단 */
+  }
+}
+
+@media (max-width: 640px) {
+  .contents-grid {
+    grid-template-columns: 1fr !important; /* 모바일은 1단 */
+  }
+}
+
+/* 카드 높이 밸런스 조정 */
+.content-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* 카드 높이를 그리드 칸에 맞춤 */
+}

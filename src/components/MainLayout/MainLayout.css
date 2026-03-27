@@ -1,0 +1,76 @@
+.main-layout {
+  display: flex;
+  /* 🚨 핵심 1: 100vw 절대 금지. 100%로 변경하여 스크롤바 너비 초과 현상 차단 */
+  width: 100%; 
+  min-height: 100vh;
+  background-color: #0f172a;
+}
+
+/* 좌측 사이드바 - 너비를 300px로 통일하여 캘린더 여유공간 확보 */
+.left-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+/* 중앙 콘텐츠 영역 */
+.content-area {
+  flex: 1;
+  /* 🚨 핵심 2: 자식 콘텐츠가 커져도 레이아웃을 찢지 못하게 방어 */
+  min-width: 0; 
+  /* 🚨 핵심 3: 주석 해제. 내용이 넘치면 중앙 영역만 세로 스크롤 되도록 허용 */
+  overflow-y: auto; 
+  background-color: #f6f9ff;
+}
+
+/* 우측 사이드바 */
+.right-sidebar {
+  width: 320px;
+  height: 100vh;
+  flex-shrink: 0;
+  background-color: #161b2a;
+  border-left: 1px solid #334155;
+  overflow-y: auto;
+}
+
+/* 미니 캘린더 핵심 로직 */
+.mini-calendar {
+  background-color: #1e293b;
+  padding: 10px; 
+  border-radius: 12px;
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); 
+  gap: 2px; 
+  text-align: center;
+}
+
+.cal-day-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; 
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.cal-day-link.active {
+  background-color: #fde047;
+  color: #0f172a;
+  font-weight: bold;
+}
+
+.event-pin {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  font-size: 9px;
+}
