@@ -1,6 +1,6 @@
 import React, { useState } from "react"; // 🚨 핵심: useState 추가
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react"; // 닫기 아이콘
+import { X, User, Mail, Phone } from "lucide-react"; // 닫기 아이콘
 import "./UserProfile.css";
 
 export default function UserProfile({ user }) {
@@ -9,19 +9,27 @@ export default function UserProfile({ user }) {
   // 🚨 1. 팝업(모달)의 열림/닫힘 상태를 관리하는 변수
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // (추가) 정보수정 모달
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
   // 🚨 2. 화면에 뿌려줄 더미 교육 데이터 배열
+  
   const dummyCourses = [
     { id: 1, title: '시니어 디지털 튜터 양성과정', provider: '서울시 50+ 재단', status: '수강중' },
     { id: 2, title: '바리스타 2급 실기 특강', provider: '내일배움센터', status: '수강대기' },
   ];
 
-  const activityScore = user?.mileage || 0;
   // 기존의 숫자 1 대신, 더미 데이터의 개수를 가져와서 표시합니다.
-  const courseCount = dummyCourses.length; 
+  // const courseCount = dummyCourses.length; 
 
   const logout = () => {
     localStorage.removeItem("user");
     navigate("/login");
+  };
+
+// 정보수정 버튼 클릭 시 호출
+  const infosetting = () => {
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -34,26 +42,26 @@ export default function UserProfile({ user }) {
           </div>
           <div className="user-text-group">
             <div className="user-id">{user?.id || "사용자"} 님</div>
-            <div className="user-welcome">반가워요! 오늘도 응원합니다.</div>
           </div>
         </div>
 
-        {/* 정보 섹션 */}
+        {/* 관심교육 */}
+        <button className="bookmark" 
+        onClick={() => setIsModalOpen(true)}>관심교육</button>
+             
+        {/*  */}
         <div className="profile-info">
+          {/* 내정보 수정 */}
+          
           <div className="info-line">
-            <span>수강 중인 교육</span>
-            {/* 🚨 3. a 태그 대신 onClick을 사용하여 팝업 상태를 true로 바꿉니다 */}
-            <strong 
-              className="clickable-count" 
-              onClick={() => setIsModalOpen(true)}
-            >
-              {courseCount}개
-            </strong>
+            <span className="myinfo" onClick={infosetting}>
+              정보수정</span>
+          
+            <span className="logout" 
+              onClick={logout}>로그아웃</span>
           </div>
         </div>
-
-        {/* 로그아웃 버튼 (기존 유지) */}
-        <button className="logout-btn" onClick={logout}>로그아웃</button>
+       
       </div>
 
       {/* 🚨 4. 팝업(모달) 화면 영역 (isModalOpen이 true일 때만 화면에 나타남) */}
@@ -62,7 +70,7 @@ export default function UserProfile({ user }) {
           {/* 모달 내부 클릭 시 닫히지 않도록 이벤트 전파(e.stopPropagation) 차단 */}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>수강 중인 교육 리스트</h3>
+              <h3>관심 교육</h3>
               <button className="close-btn" onClick={() => setIsModalOpen(false)}>
                 <X size={24} color="#cbd5e1" />
               </button>
@@ -81,6 +89,41 @@ export default function UserProfile({ user }) {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      )}
+      {/* 팝업2. 정보수정 모달 */}
+      {isEditModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsEditModalOpen(false)}>
+          <div className="modal-content edit-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>내 정보 수정</h3>
+              <button className="close-btn" onClick={() => setIsEditModalOpen(false)}>
+                <X size={24} color="#cbd5e1" />
+              </button>
+            </div>
+
+            <form className="edit-form">
+              <div className="input-group">
+                <label> <User size={18} />이름</label>
+                <input type="text" defaultValue={user?.name || '사용자'} />
+              </div>
+              <div className="input-group">
+                <label> <Mail size={18} />이메일</label>
+                <input type="email" defaultValue={user?.email || 'example@mail.com'} />
+              </div>
+              <div className="input-group">
+                <label><Phone size={18} /> 연락처</label>
+                <input type="text" placeholder="010-0000-0000" />
+              </div>
+              <div className="edit-actions">
+                <button type="button" className="save-btn" onClick={()=>{
+                  alert('정보가 저장되었습니다.');
+                  setIsEditModalOpen(false);
+                  }}>변경사항 저장</button>
+                <button type="button" className="cancel-btn" onClick={()=>setIsEditModalOpen(false)}>취소</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
