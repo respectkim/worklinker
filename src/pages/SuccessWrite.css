@@ -1,0 +1,64 @@
+.success-write-layout {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+.success-write-page {
+  padding-top: 80px;
+}
+
+.success-write-container {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.success-write-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.success-write-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.success-write-form input,
+.success-write-form select,
+.success-write-form textarea {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+}
+
+.success-write-form textarea {
+  resize: none;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btns button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btns .primary {
+  background: #2563eb;
+  color: #fff;
+}
