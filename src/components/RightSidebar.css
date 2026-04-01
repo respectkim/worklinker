@@ -1,6 +1,6 @@
 /* 우측 사이드바 전체 컨테이너 */
 .right-sidebar {
-  width: 100%;
+  width: 320px;
   min-height: 100%;
   padding: 10px; /* 여백은 여기서 딱 한 번만 줍니다 */
   box-sizing: border-box;
@@ -9,6 +9,7 @@
   gap: 24px;
   /* 🚨 핵심 2: App.css에서 전염된 '가운데 정렬'을 여기서 끊어냅니다 */
   text-align: left; 
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
 }
 
 /* 섹션 제목 스타일 (통일감 강조) */
@@ -23,20 +24,37 @@
   letter-spacing: -0.5px;
 }
 
+/*.user-profile {
+  width: 90%;
+  /* background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%); */
+  /*color: #ffffff;*/
+  /* border: 1px solid #334155; 
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}*/
+
+
+
 /* 링크 리스트 */
 .link-list {
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 8px; /* 버튼들 사이를 촘촘하게 */
-  list-style-type: none;
+  align-items: center;
+  padding: 0px 11px
 }
 
 /* 일자리 찾기 버튼 (균형 잡힌 슬림한 디자인) */
 .job-link-button {
   /* 🚨 핵심 3: 85%가 쏠림 현상을 유발했습니다. 100%로 변경하십시오 */
   width: 90%; 
-  height: 52px;
-  background-color: #1e293b;
+  height: 47px;
+  background-color: #4a4949;
   border: 1px solid #334155;
   color: #f1f5f9;
   display: flex;

@@ -1,7 +1,8 @@
 .user-profile {
   width: 90%;
-  background-color: #1e293b; /* 사이드바 배경보다 살짝 밝은 카드색 */
-  border: 1px solid #334155;
+  /* background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%); */
+  color: #ffffff;
+  /* border: 1px solid #334155; */
   border-radius: 16px;
   padding: 24px;
   box-sizing: border-box;
@@ -14,14 +15,8 @@
 .user-id {
   font-size: 20px; /* 폰트 확대 */
   font-weight: 700;
-  color: #f1f5f9;
+  color: #36383b;
   text-align: left;
-}
-
-.user-welcome {
-  font-size: 12px;
-  color: #3b82f6; /* 포인트 컬러 */
-  margin-top: 4px;
 }
 
 /* 정보 라인 (수강 중인 교육, 활동 포인트 등) */
@@ -29,26 +24,26 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border-top: 1px solid #334155;
-  padding-top: 15px;
+  /* border-top: 1px solid #334155; */
+  /* padding-top: 5px; */
 }
 
 .info-line {
   font-size: 15px;
   color: #cbd5e1;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .info-line strong {
   color: #ffffff;
 }
 
-/* 로그아웃 버튼 */
-.logout-btn {
+/* 관심교육 버튼 */
+.bookmark {
   width: 100%;
   padding: 12px 0;
-  background-color: #334155;
+  background-color: #4a4949;
   border: 1px solid #475569;
   border-radius: 8px;
   color: #f1f5f9;
@@ -58,10 +53,11 @@
   transition: all 0.2s ease;
 }
 
-.logout-btn:hover {
-  background-color: #ef4444; /* 마우스 올리면 경고 의미의 빨간색 */
-  border-color: #ef4444;
+.bookmark:hover {
+  background-color: #3b82f6; /* 마우스 올리면 경고 의미의 빨간색 */
+  border-color: #60a5fa;;
   color: white;
+  
 }
 
 .profile-header {
@@ -89,18 +85,98 @@
 }
 
 /* UserProfile.css 맨 아래 추가 */
+/* 정보수정 */
 
-/* 클릭 가능한 숫자 디자인 */
-.clickable-count {
-  color: #3b82f6;
+.myinfo{
+  color: #393a3c;
   cursor: pointer;
   text-decoration: none;
   text-underline-offset: 4px;
   transition: color 0.2s;
 }
 
-.clickable-count:hover {
-  color: #60a5fa;
+.myinfo:hover{
+  color: #ef4444;
+}
+
+.edit-modal{
+  max-width: 400px !important; /*모달 너비조절*/
+}
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.input-group input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: #3b82f6; /* 강조색 */
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.save-btn {
+  flex: 2;
+  background-color: #3b82f6;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+  background-color: #f1f5f9;
+  color: #64748b;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.save-btn:hover { background-color: #2563eb; }
+.cancel-btn:hover { background-color: #e2e8f0; }
+
+/* 로그아웃 */
+.logout {
+  color: #393a3c;
+  cursor: pointer;
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.logout:hover {
+  color: #ef4444;
 }
 
 /* 팝업(모달) 배경 - 화면 전체를 어둡게 덮음 */

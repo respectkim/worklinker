@@ -94,7 +94,3 @@
   border: 2px dashed #334155;
   border-radius: 12px;
 }
-
-/* 사이드바 스타일 (이미지와 동일하게 유지) */
-.left-sidebar { width: 280px; background-color: #edf1f6; padding: 0px; }
-.right-sidebar { width: 320px; background-color: #edf1f6; padding: 10px; }
