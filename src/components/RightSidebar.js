@@ -27,7 +27,7 @@ const RightSidebar = ({ user }) => {
       </section>
 
       {/* 2. 취업 동향 및 뉴스 (PRD 3.2 반영) */}
-      <section className="sidebar-section">
+      {/* <section className="sidebar-section">
         <h2 className="section-title">
           📢 취업 동향
         </h2>
@@ -40,7 +40,7 @@ const RightSidebar = ({ user }) => {
             </li>
           ))}
         </ul>
-      </section>
+      </section> */}
 
       {/* 3. 일자리 찾기 (세로 버튼형) */}
       <section className="sidebar-section">
