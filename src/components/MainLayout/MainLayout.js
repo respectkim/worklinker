@@ -9,7 +9,7 @@ export default function MainLayout({ user }) {
     // 전체 대시보드: 화면에 꽉 차고 스크롤 없음
     <div className="main-layout" style={{ display: 'flex', width: '100%', height: '100vh', backgroundColor: '#c1cbe6', overflow: 'hidden' }}>
       {/* 1. 좌측 사이드바: 너비 고정 */}
-      <div className="left-sidebar" style={{ width: '300px', height: '100%', backgroundColor: '#161b2a', borderRight: '1px solid #334155', overflowY: 'auto', flexShrink:0 }}>
+      <div className="left-sidebar" style={{ width: '300px', height: '100%', overflowY: 'auto', flexShrink:0 }}>
         <LeftSidebar />
       </div>
 
