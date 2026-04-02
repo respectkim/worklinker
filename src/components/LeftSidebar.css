@@ -4,15 +4,6 @@
   padding: 24px 18px;
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
   backdrop-filter: blur(16px);
-<<<<<<< HEAD
-  border-right: 1px solid rgba(148, 163, 184, 0.16);
-  height: 100%;
-  min-height: calc(100vh - 81px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-=======
   /* border-right: 1px solid rgba(148, 163, 184, 0.16);// */
   height: 100vh;
   overflow-y: hidden; /* 내용이 넘칠 때만 스크롤 작동 */
@@ -21,7 +12,6 @@
   /* ✅ 팩트 체크: 크롬, 사파리 등에서 스크롤바 모양만 숨기기 */
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
->>>>>>> main
 }
 
 .left-sidebar-content::-webkit-scrollbar {

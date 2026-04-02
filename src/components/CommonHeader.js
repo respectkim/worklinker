@@ -20,16 +20,21 @@ const moveToSection =(sectionId) =>{
             <div className='header-left'>
                 <h1 className='logo' header-logo>
                     <img src='/logo2.png' alt='logo'/>
-                    <span>WorkLinker</span>
+                   <button type='button'
+                   onClick={()=>moveToSection('home')}
+                   className='header-name'
+                   >
+                    WorkLinker
+                   </button>
                 </h1>
 
                 <nav className='main-nav'>
-                  <button type='button'
+                  {/* <button type='button'
                   onClick={()=>moveToSection('home')}
                   className='main-nav-link nav-button'
                   >
                     HOME
-                  </button>
+                  </button> */}
                   <Link to='/success' className='main-nav-link'>
                   성공사례
                   </Link>
