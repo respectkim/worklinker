@@ -48,10 +48,30 @@ html, body, #root {
   line-height: 1.2;
 }
 
-.logo span:first-child {
+/* .logo span:first-child {
   font-size: clamp(0.9rem, 1.3vw, 1rem);
   font-weight: 500;
   color: #6b7280;
+} */
+.header-name{
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: #475569;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  color: #475569 !important;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .logo img{
