@@ -18,7 +18,7 @@ const RightSidebar = ({ user }) => {
   ];
 
   return (
-    <aside className="right-sidebar">
+    <aside className="right-sidebar-content">
       
       {/* 1. 사용자 프로필 영역 */}
       <section className="sidebar-section">

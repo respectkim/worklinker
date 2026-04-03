@@ -1,18 +1,14 @@
 /* LeftSidebar.css */
 
 .left-sidebar-content {
-  width: 280px;
-  min-width: 280px;
-  flex-shrink: 0;
-  box-sizing: border-box; /* 🚨 핵심 추가: 패딩이 늘어나도 전체 280px을 절대 넘지 않게 억제 */
-  
+  width: 100%; /* 🚨 부모(248px) 크기에 완벽하게 맞춤 */
+  height: 100%; /* 100vh 대신 부모 영역을 가득 채움 */
+  box-sizing: border-box; 
   padding: 24px 18px;
-  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
-  backdrop-filter: blur(16px);
-  height: 100vh;
+
+  /* 부모인 .left-sidebar에 이미 배경색이 있으므로 투명하게 두거나 유지해도 됩니다. */
   overflow-y: hidden; 
   overflow-x: hidden; 
-
   -ms-overflow-style: none; 
   scrollbar-width: none; 
 }
@@ -64,14 +60,23 @@
   margin-bottom: 15px;
 }
 
-.mini-calendar {
-  background-color: rgba(255, 255, 255, 0.8) !important;
+.mini-calendar-area {
+  /* background-color: rgba(255, 255, 255, 0.8) !important; */
   padding: 10px !important;
-  border-radius: 16px;
+  /* border-radius: 16px;
   border: 1px solid #d6e1ef;
   width: 100% !important;
   box-sizing: border-box !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04); */
+  align-items: center;  
+}
+
+/* 🚨 메뉴 제목("나의 일정") 설정 */
+.menu-title {
+  width: 100%;
+  /* 핵심 2: 박스는 가운데로 가더라도, 제목 글씨는 원래대로 왼쪽 정렬 유지 */
+  text-align: left; 
+  margin-bottom: 15px;
 }
 
 .cal-header {
