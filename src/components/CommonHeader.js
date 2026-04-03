@@ -35,9 +35,6 @@ const moveToSection =(sectionId) =>{
                   >
                     HOME
                   </button> */}
-                  <Link to='/success' className='main-nav-link'>
-                  성공사례
-                  </Link>
                   <button
                   type='button'
                   onClick={()=> moveToSection('trend')}
@@ -52,11 +49,14 @@ const moveToSection =(sectionId) =>{
                   >
                     추천직무
                   </button>
-                  <Link to='/program' className='main-nav-link'>
-                  추천교육
+                  <Link to='/success' className='main-nav-link'>
+                    성공사례
                   </Link>
-                 <Link to='/contents' className='main-nav-link'>
-                  유튭영상
+                  <Link to='/program' className='main-nav-link'>
+                    추천교육
+                  </Link>
+                  <Link to='/contents' className='main-nav-link'>
+                    유튭영상
                   </Link>
 
                 </nav>

@@ -1,10 +1,12 @@
 .explore-page-container {
   padding: 30px 40px;
   background-color: #f8fafc; 
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: auto;
   box-sizing: border-box;
 }
+
+
 
 .explore-header { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
 .user-context h2 { font-size: 28px; color: #0f172a; margin-bottom: 8px; font-weight: 800; }
