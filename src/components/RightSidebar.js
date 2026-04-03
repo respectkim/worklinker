@@ -26,8 +26,8 @@ const RightSidebar = ({ user }) => {
         <UserProfile user={user} />
       </section>
 
-      {/* 2. 취업 동향 및 뉴스 
-      <section className="sidebar-section">
+      {/* 2. 취업 동향 및 뉴스 (PRD 3.2 반영) */}
+      {/* <section className="sidebar-section">
         <h2 className="section-title">
           📢 취업 동향
         </h2>

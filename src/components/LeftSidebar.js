@@ -32,17 +32,17 @@ function LeftSidebar() {
   return (
     <div className="left-sidebar-content">
       <h1 className="logo">
-        <span>WorkLinker</span> 
+        {/* <span>WorkLinker</span>  */}
       </h1>
       
       {/* 🚨 수정된 네비게이션 버튼 영역 */}
-      <div className="nav-btns">
+      {/* <div className="nav-btns">
         <button 
           // 현재 URL이 /home 이면 'active' 클래스를 붙입니다.
           className={`nav-btn ${location.pathname === '/home' ? 'active' : ''}`}
           onClick={() => navigate('/home')}
         >
-          🏠 간편보기 (홈)
+          🏠 추천교육
         </button>
         <button 
           // 현재 URL이 /program 이면 'active' 클래스를 붙입니다.
@@ -51,7 +51,7 @@ function LeftSidebar() {
         >
           📋 교육/채용 탐색
         </button>
-      </div>
+      </div> */}
 
       <div className="mini-calendar-area">
         <h3 className="menu-title">나의 일정</h3>

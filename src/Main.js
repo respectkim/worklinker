@@ -1,11 +1,30 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {motion} from 'framer-motion'
 import { useEffect, useState, useMemo } from 'react';
 import './Main.css';
 import { parseEmploymentExcel } from './utils/parseEmploymentExcel';
-
+import CommonHeader from './components/CommonHeader';
 
 export default function Main(){
+
+  // CommonHeader 함수 선언
+  const location = useLocation();
+
+  useEffect(()=>{
+    if (location.hash) {
+      const id = location.hash.replace('#','');
+      const el = document.getElementById(id);
+
+      if(el){
+        setTimeout(()=>{
+          el.scrollIntoView({behavior:'smooth'});
+        },100);
+      }
+    }
+   },[location]);
+  // CommonHeader 함수 선언
+
+
   const [mouseX, setMouseX] = useState(0);
 
   const [dashboardData, setDashboardData] = useState(null);
@@ -160,29 +179,18 @@ useEffect(() => {
   
  return(
     <div className='pages'>
+    <CommonHeader />
     
     
-    
-        {/* Header  */}
-     <header className='header'>
-        <h1 className='logo'>
-          {/* <span>일과 기회를 연결하는</span> */}
-          <img src='logo2.png' alt='logo'/>
-          <span>WorkLinker</span>
-        </h1>
-        
-        <nav className='nav'>
-          <Link to="/login" className='nav-link'>Login</Link>
-          <span className='nav-divider'/>
-          <Link to="/register" className='nav-btn'>Register</Link>  
-        </nav>  
-                    
-     </header>
+      
+       
+     
     {/* Main */}
 
     <main className='main-wrapper'>
     
       <section
+      id='home'
       className='hero-wrapper'
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -226,7 +234,7 @@ useEffect(() => {
 
 
    {/* 두 번째 화면 */}
-  <section className="news-section">
+  <section id="trend" className="news-section">
           <div className="news-inner">
             <h2 className="news-title">취업동향</h2>
             <p className='news-subtitle'>40세 이상 재취업 시장을 한눈에 보는 핵심 지표</p>        
@@ -401,7 +409,7 @@ useEffect(() => {
         </section>
     {/* 세 번째 화면 */}
 
-    <section className="trend-section">
+    <section id='jobs' className="trend-section">
   <div className="trend-inner">
     <div className="trend-header">
       <h2 className="trend-title">맞춤 직무 추천</h2>

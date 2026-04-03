@@ -2,7 +2,6 @@
 
 .left-sidebar-content {
   padding: 24px 18px;
-  /* ✅ 메인 화면의 하늘색 그라데이션 적용 */
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
   backdrop-filter: blur(16px);
   /* border-right: 1px solid rgba(148, 163, 184, 0.16);// */
@@ -16,14 +15,14 @@
 }
 
 .left-sidebar-content::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-.logo {
+.left-sidebar-content .logo {
   font-size: 24px;
   font-weight: 800;
   margin-bottom: 30px;
-  color: #0f172a; /* 🚨 텍스트 네이비 반전 */
+  color: #0f172a;
   letter-spacing: -0.04em;
 }
 
@@ -57,14 +56,12 @@
 
 .menu-title {
   font-size: 16px;
-  color: #2563eb; /* 블루 포인트 */
+  color: #2563eb;
   font-weight: 800;
   margin-bottom: 15px;
 }
 
-/* 📅 미니 캘린더 영역 (구조 보존형 테마 수정) */
 .mini-calendar {
-  /* ✅ 기존 어두운 배경(#1e293b) 대신 밝은 유리 질감 카드 적용 */
   background-color: rgba(255, 255, 255, 0.8) !important;
   padding: 10px !important;
   border-radius: 16px;
@@ -74,14 +71,14 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
 }
 
-.cal-header{
+.cal-header {
   padding-bottom: 10px;
 }
 
 .cal-grid {
   display: grid !important;
-  grid-template-columns: repeat(7, 1fr) !important; /* 🚨 7열 강제 고정 */
-  gap: px !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 2px !important;
   width: 100% !important;
 }
 
@@ -98,10 +95,10 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 100% !important; /* 부모 너비에 맞춤 */
+  width: 100% !important;
   height: auto !important;
-  aspect-ratio: 1 / 1 !important; /* 🚨 정사각형 비율 강제 고정 */
-  color: #475569 !important; /* 텍스트 가독성 확보 */
+  aspect-ratio: 1 / 1 !important;
+  color: #475569 !important;
   text-decoration: none !important;
   font-size: 12px !important;
   border-radius: 8px !important;
@@ -113,19 +110,17 @@
   color: #2563eb !important;
 }
 
-/* 📌 오늘 날짜(Active) 디자인 */
 .cal-day-link.active {
-  background-color: #2563eb !important; /* 로열 블루 */
+  background-color: #2563eb !important;
   color: #ffffff !important;
   font-weight: 800 !important;
   box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
-/* 📍 일정 표시 핀 */
 .event-pin {
   position: absolute !important;
   top: 2px !important;
   right: 2px !important;
   font-size: 8px !important;
-  color: #f97316; /* 팩트 포인트: 오렌지색으로 강조 */
+  color: #f97316;
 }
