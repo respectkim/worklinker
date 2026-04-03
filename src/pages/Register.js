@@ -205,7 +205,25 @@ function Register() {
 
           <div className="form-group">
             <label>비밀번호 확인</label>
-            <input type="password" name="confirmPassword" placeholder="비밀번호 재입력" onChange={handleChange} />
+            <input 
+              type="password" 
+              name="confirmPassword" 
+              placeholder="비밀번호 재입력" 
+              onChange={handleChange} 
+              style={{
+                borderColor: form.confirmPassword 
+                  ? (form.password === form.confirmPassword ? '#10b981' : '#ef4444') 
+                  : '#475569'
+              }}
+            />
+            {/* 🚨 실시간 비밀번호 일치 여부 피드백 UI 추가 */}
+            {form.confirmPassword && (
+              <span className={`password-match-msg ${form.password === form.confirmPassword ? 'success' : 'error'}`}>
+                {form.password === form.confirmPassword 
+                  ? '✅ 비밀번호가 일치합니다.' 
+                  : '❌ 비밀번호가 일치하지 않습니다.'}
+              </span>
+            )}
           </div>
 
           <div className="form-group">

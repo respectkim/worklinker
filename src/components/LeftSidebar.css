@@ -1,17 +1,20 @@
 /* LeftSidebar.css */
 
 .left-sidebar-content {
+  width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
+  box-sizing: border-box; /* 🚨 핵심 추가: 패딩이 늘어나도 전체 280px을 절대 넘지 않게 억제 */
+  
   padding: 24px 18px;
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
   backdrop-filter: blur(16px);
-  /* border-right: 1px solid rgba(148, 163, 184, 0.16);// */
   height: 100vh;
-  overflow-y: hidden; /* 내용이 넘칠 때만 스크롤 작동 */
-  overflow-x: hidden; /* 가로 스크롤은 절대 금지 */
+  overflow-y: hidden; 
+  overflow-x: hidden; 
 
-  /* ✅ 팩트 체크: 크롬, 사파리 등에서 스크롤바 모양만 숨기기 */
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 .left-sidebar-content::-webkit-scrollbar {

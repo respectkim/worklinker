@@ -188,5 +188,22 @@
 }
 .btn-submit:hover { background-color: #eab308; }
 
+/* 실시간 비밀번호 검증 피드백 텍스트 */
+.password-match-msg {
+  font-size: 13px;
+  margin-top: 2px;
+  padding-left: 4px;
+  font-weight: 600;
+  display: block;
+}
+
+.password-match-msg.error {
+  color: #ef4444; /* 경고를 나타내는 빨간색 */
+}
+
+.password-match-msg.success {
+  color: #10b981; /* 안심을 주는 초록색 */
+}
+
 @media (max-width: 768px) { .job-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 500px) { .category-tabs { justify-content: center; } }
