@@ -16,40 +16,42 @@ const Contents = () => {
   const itemsPerPage = 9;
   const pagePerBlock = 10;
 
-  const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
-
   const fetchVideos = async (searchQuery, currentOrder) => {
     setIsLoading(true);
     setCurrentPage(1);
-    try {
+    try{
       let combinedItems = [];
-      const searchUrl1 = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${searchQuery}&type=video&order=${currentOrder}&key=${API_KEY}`;
+
+      // 첫 페이지 검색
+      const searchUrl1 = `http://localhost:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}`;
       const searchRes1 = await fetch(searchUrl1);
       const searchData1 = await searchRes1.json();
       combinedItems = [...(searchData1.items || [])];
 
-      if (searchData1.nextPageToken) {
-        const searchUrl2 = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${searchQuery}&type=video&order=${currentOrder}&pageToken=${searchData1.nextPageToken}&key=${API_KEY}`;
+      // 다음 페이지가 있다면 추가 검색
+      if (searchData1.nextPageToken){
+        const searchUrl2 = `http://localhost:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}&pageToken=${searchData1.nextPageToken}`;
         const searchRes2 = await fetch(searchUrl2);
         const searchData2 = await searchRes2.json();
         combinedItems = [...combinedItems, ...(searchData2.items || [])];
       }
 
-      const videoIds = combinedItems.map(item => item.id.videoId);
+      const videoIds = combinedItems.map(item => item.id.videoId).filter(Boolean);
       let finalVideosWithStats = [];
 
-      for (let i = 0; i < videoIds.length; i += 50) {
-        const chunkIds = videoIds.slice(i, i + 50).join(',');
-        if (chunkIds) {
-          const statsUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${chunkIds}&key=${API_KEY}`;
+      // 50개씩 쪼개서 조회수 통계 가져오기
+      for (let i =0; i < videoIds.length; i +=50) {
+        const chunkIds = videoIds.slice(i, i+50).join(',');
+        if(chunkIds){
+          const statsUrl = `http://localhost:3001/api/youtube/videos?id=${chunkIds}`;
           const statsRes = await fetch(statsUrl);
           const statsData = await statsRes.json();
           finalVideosWithStats = [...finalVideosWithStats, ...(statsData.items || [])];
         }
       }
       setAllVideos(finalVideosWithStats);
-    } catch (error) {
-      console.error("유튜브 데이터 로드 실패:", error);
+    } catch (error){
+      console.error('유튜브 데이터 로드 실패', error);
     } finally {
       setIsLoading(false);
     }
