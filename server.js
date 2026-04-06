@@ -12,11 +12,11 @@ const { AwardIcon, MessageSquareText } = require('lucide-react');
 const app = express();
 const PORT = 3001;
 
-// React 앱(localhost:3000)의 요청을 허용
-app.use(cors({ origin: /^http:\/\/localhost/ }));
+// 일단 모든 통신 열어두기
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-console.log('API 키 확인:', process.env.ANTHROPIC_API_KEY);
+console.log('✅ Anthropic API 키 로드 완료');
 
 app.post('/api/chat', async function(req, res) {
   try {
@@ -90,5 +90,5 @@ app.get('/api/youtube/:endpoint', async function(req, res) {
   }
 });
 app.listen(PORT, function() {
-  console.log('프록시 서버 실행 중: http://localhost:' + PORT);
+  console.log('🚀 AWS 프록시 서버 무한 구동 중 (포트: ' + PORT + ')');
 });

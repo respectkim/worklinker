@@ -23,14 +23,14 @@ const Contents = () => {
       let combinedItems = [];
 
       // 첫 페이지 검색
-      const searchUrl1 = `http://localhost:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}`;
+      const searchUrl1 = `http://13.124.46.84:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}`;
       const searchRes1 = await fetch(searchUrl1);
       const searchData1 = await searchRes1.json();
       combinedItems = [...(searchData1.items || [])];
 
       // 다음 페이지가 있다면 추가 검색
       if (searchData1.nextPageToken){
-        const searchUrl2 = `http://localhost:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}&pageToken=${searchData1.nextPageToken}`;
+        const searchUrl2 = `http://13.124.46.84:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}&pageToken=${searchData1.nextPageToken}`;
         const searchRes2 = await fetch(searchUrl2);
         const searchData2 = await searchRes2.json();
         combinedItems = [...combinedItems, ...(searchData2.items || [])];
@@ -43,7 +43,7 @@ const Contents = () => {
       for (let i =0; i < videoIds.length; i +=50) {
         const chunkIds = videoIds.slice(i, i+50).join(',');
         if(chunkIds){
-          const statsUrl = `http://localhost:3001/api/youtube/videos?id=${chunkIds}`;
+          const statsUrl = `http://13.124.46.84:3001/api/youtube/videos?id=${chunkIds}`;
           const statsRes = await fetch(statsUrl);
           const statsData = await statsRes.json();
           finalVideosWithStats = [...finalVideosWithStats, ...(statsData.items || [])];
