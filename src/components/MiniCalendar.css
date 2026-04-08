@@ -1,55 +1,134 @@
-/* 달력 전체 컨테이너 */
-.calendar-container {
-  background-color: #1e293b;
-  border: 1px solid #334155;
+/* 🚨 1. 컨테이너 절대 방어선 구축 */
+.mini-calendar-container {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 16px;
-  color: #f1f5f9;
+  /* 내부 여백을 극한으로 줄여서 그리드 공간 확보 */
+  padding: 10px 4px; 
+  color: #0f172a;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  
+  /* 🚨 핵심 3: 사이드바 너비에 맞춰 100% 꽉 채우고 스스로 중앙 정렬 */
+  width: 100%; 
+  margin: 0 auto; 
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-/* 년/월 헤더 */
+.calendar-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
 .calendar-header {
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-weight: 800;
+  font-size: 15px; /* 글씨 크기 다이어트 */
+  color: #1e293b;
+  white-space: nowrap; /* 연/월이 두 줄로 쪼개지는 것 방지 */
 }
 
-/* 요일 및 날짜 그리드 (핵심 부분!) */
+.month-nav-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.month-nav-btn:hover {
+  background-color: #f1f5f9;
+  color: #2563eb;
+}
+
+/* 🚨 2. 그리드(Grid) 압축 */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7열로 나눔 */
-  gap: 5px;
+  /* 7개의 열이 남는 공간 안에서만 똑같이 나눠 가지도록 강제 */
+  grid-template-columns: repeat(7, minmax(0, 1fr)); 
+  gap: 2px;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* 요일 스타일 (일~토) */
 .day-of-week {
-  font-size: 12px;
+  font-size: 11px; /* 요일 글씨 다이어트 */
   color: #94a3b8;
-  font-weight: bold;
-  padding-bottom: 8px;
+  font-weight: 700;
+  padding-bottom: 6px;
 }
 
-/* 개별 날짜 */
+.day-of-week.sunday { color: #ef4444; }
+.day-of-week.saturday { color: #3b82f6; }
+
+/* 🚨 3. 개별 날짜 동그라미 압축 */
 .calendar-day {
-  font-size: 14px;
-  padding: 8px 0;
-  border-radius: 6px;
+  position: relative; 
+  font-size: 12px; /* 날짜 글씨 다이어트 */
+  font-weight: 500;
+  padding: 0; 
+  border-radius: 50%;
   cursor: pointer;
-  transition: background 0.2s;
+  color: #334155;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1; 
+  
+  /* 동그라미도 본인에게 할당된 칸을 넘지 않도록 고정 */
+  width: 100%; 
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-.calendar-day:hover {
-  background-color: #334155;
+.calendar-day:not(.empty):hover {
+  background-color: #f1f5f9;
+  color: #2563eb;
+  font-weight: bold;
 }
 
-/* 하단 상태 메시지 */
-.calendar-status {
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid #334155;
-  color: #3b82f6;
-  font-size: 12px;
-  text-align: center;
+.calendar-day.today {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.calendar-day.today:hover {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.event-pin {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 10px; /* 좁아진 동그라미에 맞게 압정 크기도 축소 */
+  transform: rotate(15deg);
+  pointer-events: none; 
+  filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.2));
+}
+
+/* 🚨 사용자가 클릭한(현재 보고 있는) 날짜 강조 효과 */
+.calendar-day.selected {
+  background-color: #e0e7ff; /* 연한 파란색 배경 */
+  color: #2563eb;
+  font-weight: 800;
+  border: 2px solid #2563eb; /* 명확한 파란색 테두리 */
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+/* 예외 처리: 오늘 날짜이면서 동시에 선택된 경우 */
+.calendar-day.today.selected {
+  background-color: #1e40af; /* 더 진한 파란색으로 변경 */
+  border: 2px solid #1e3a8a;
+  color: #ffffff;
 }

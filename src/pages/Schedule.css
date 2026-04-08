@@ -1,96 +1,105 @@
-/* 레이아웃 핵심 설정 */
-.dashboard-wrapper {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  background-color: #0b0f1a;
-  overflow: hidden; /* 전체 스크롤 방지 */
-}
-
-/* 중앙 영역을 강제로 화면 중간에 위치시킴 */
-.center-content {
-  flex: 1; /* 남은 공간을 모두 차지 */
+/* 컨테이너 너비 및 테마 설정 */
+.schedule-container {
+  background-color: #ffffff;
+  border-radius: 16px;
   padding: 40px;
-  background-color: #0f172a; /* 사이드바보다 살짝 밝은 배경 */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 가로 중앙 */
-  overflow-y: auto; /* 내용 많을 때만 스크롤 */
-}
-
-.schedule-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 800px;
-  background-color: #1e293b;
-  border-radius: 20px;
-  padding: 40px;
-  border: 1px solid #334155;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.card-header h2 { color: #fde047; font-size: 26px; margin-bottom: 10px; }
-.sub-text { color: #94a3b8; font-size: 15px; }
+.schedule-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f8fafc;
+  padding-bottom: 20px;
+}
 
-/* 입력창 스타일 강화 */
+.schedule-header .title {
+  color: #0f172a;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.schedule-header .sub-desc {
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* 입력창 최적화 */
 .schedule-input-group {
   display: flex;
-  gap: 15px;
-  margin: 30px 0;
-  padding: 10px;
-  background-color: #0f172a;
-  border-radius: 12px;
+  gap: 12px;
+  margin-bottom: 40px;
 }
 
 .schedule-input-group input {
   flex: 1;
-  background: transparent;
-  border: none;
-  color: white;
-  padding: 10px;
-  font-size: 17px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #0f172a;
+  padding: 14px 16px;
+  font-size: 16px;
   outline: none;
+  transition: border-color 0.2s;
+}
+
+.schedule-input-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .save-btn {
-  background-color: #fde047;
-  color: #0f172a;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 8px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-/* 리스트 스타일 */
-.list-label { color: #f1f5f9; margin-bottom: 15px; font-size: 18px; }
-.todo-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background-color: #0f172a;
-  padding: 15px 20px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #334155;
-}
-
-.bullet { color: #fde047; font-size: 12px; }
-.text { flex: 1; font-size: 17px; color: #f1f5f9; }
-
-.del-btn {
-  background-color: #ef4444;
+  background-color: #2563eb; /* 블루 포인트 */
   color: white;
   border: none;
-  padding: 5px 12px;
-  border-radius: 5px;
+  padding: 0 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 13px;
+  transition: background-color 0.2s;
+  white-space: nowrap;
 }
 
+.save-btn:hover { background-color: #1d4ed8; }
+
+/* 리스트 스타일 */
+.todo-list-area .list-count {
+  color: #1e293b; font-size: 18px; margin-bottom: 20px; font-weight: 700;
+}
+
+.todo-list-area .list-count span { color: #2563eb; }
+
+.todo-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+
+.todo-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #ffffff; border: 1px solid #e2e8f0; padding: 16px 20px;
+  border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.todo-item:hover {
+  transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-color: #cbd5e1;
+}
+
+.todo-text { color: #334155; font-size: 16px; font-weight: 500; }
+
+/* 삭제 버튼 부드러운 톤으로 변경 */
+.del-btn {
+  background-color: #fee2e2; color: #ef4444; border: 1px solid #fecaca;
+  padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px;
+  font-weight: 600; transition: all 0.2s;
+}
+
+.del-btn:hover { background-color: #fca5a5; color: white; }
+
 .empty-state {
-  text-align: center;
-  padding: 60px 0;
-  color: #64748b;
-  border: 2px dashed #334155;
-  border-radius: 12px;
+  text-align: center; padding: 60px; color: #94a3b8; border: 2px dashed #e2e8f0;
+  border-radius: 12px; background-color: #f8fafc;
 }

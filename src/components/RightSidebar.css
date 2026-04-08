@@ -1,15 +1,14 @@
 /* 우측 사이드바 전체 컨테이너 */
-.right-sidebar {
-  width: 320px;
+.right-sidebar-content {
+  width: 100%; /* 부모(MainLayout이 정해준 320px) 공간 안에서만 100% 채움 */
   min-height: 100%;
-  padding: 10px; /* 여백은 여기서 딱 한 번만 줍니다 */
+  padding: 10px; 
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  /* 🚨 핵심 2: App.css에서 전염된 '가운데 정렬'을 여기서 끊어냅니다 */
   text-align: left; 
-  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  /* 배경색은 부모 쪽에 이미 있으므로 투명하게 두거나 유지해도 무방합니다 */
 }
 
 /* 섹션 제목 스타일 (통일감 강조) */
@@ -73,42 +72,3 @@
   color: white;
 }
 
-/* 취업 동향 뉴스 리스트 (텍스트 가독성 강화) */
-.news-list {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  list-style-type: none;
-}
-
-/* 개별 뉴스 링크 (폰트 색상 핵심!) */
-.news-link {
-  color: #f8fafc; /* 가장 읽기 편한 아이보리 화이트 */
-  text-decoration: none; /* 밑줄 제거 (가독성 향상) */
-  font-size: 15px;
-  line-height: 1.6; /* 줄 간격을 넓혀서 읽기 편하게 함 */
-  transition: color 0.2s ease;
-  display: block;
-}
-
-/* 마우스를 올렸을 때 (Hover) */
-.news-link:hover {
-  color: #fde047; /* 제목과 동일한 옐로우로 강조 */
-  text-decoration: underline; /* 호버 시에만 밑줄 표시 */
-}
-
-.news-item {
-  font-size: 14px;
-  color: #cbd5e1;
-  line-height: 1.5;
-  padding-left: 10px;
-  border-left: 3px solid #334155; /* 왼쪽 선으로 뉴스 구분 */
-  cursor: pointer;
-}
-
-.news-item:hover {
-  color: #fde047;
-  border-left-color: #fde047;
-}

@@ -11,6 +11,7 @@ import Schedule from './pages/Schedule';
 import Success from './pages/Success';
 import SuccessDetail from './pages/SuccessDetail';
 import SuccessWrite from './pages/SuccessWrite';
+import AiConsultant from './components/AiConsultant';
 
 function Router() {
   return (
@@ -30,6 +31,9 @@ function Router() {
         {/* ⭐ 일정 관리: 기본 접속과 날짜 클릭 접속을 모두 허용하도록 수정 */}
         <Route path="/schedule" element={<Schedule />} /> 
         <Route path="/schedule/:date" element={<Schedule />} /> 
+        
+        {/* 챗봇 */}
+        <Route path='/ai-consultant' element={<AiConsultant />} />
       </Route>
 
       <Route path='/success' element={<Success/>}/>
