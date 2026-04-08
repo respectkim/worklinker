@@ -1,75 +1,66 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../api/api'; 
 import './ProgramExplorePage.css';
 
-const MOCK_RECOMMENDATIONS = [
-  {
-    id: 'TRPR_1',
-    title: '데이터 기반 의사결정 역량 강화 과정',
-    institution: '한국공학대학교',
-    region: '경기 시흥시',
-    matchScore: 95,
-    keywords: ['데이터분석', '의사결정 지원', '시각화'],
-    isFree: true,
-    ncsCode: '02030201',
-    tags: ['hybrid', 'job', 'region'] 
-  },
-  {
-    id: 'TRPR_2',
-    title: '비전공자를 위한 파이썬 자동화 사무 업무',
-    institution: '이젠아카데미',
-    region: '서울 강남구',
-    matchScore: 88,
-    keywords: ['업무자동화', '파이썬', '사무/행정'],
-    isFree: false,
-    cost: 150000,
-    ncsCode: '15010101',
-    tags: ['job'] 
-  },
-  {
-    id: 'TRPR_3',
-    title: '시흥시 스마트제조 AI 시스템 관리자 양성',
-    institution: '한국산업인력공단',
-    region: '경기 시흥시',
-    matchScore: 82,
-    keywords: ['스마트제조', '자동화', '지역특화'],
-    isFree: true,
-    ncsCode: '20010202',
-    tags: ['hybrid', 'region'] 
-  }
-];
-
-function ProgramExplorePage({ user }) {
-  const currentUser = user || { 
-    name: '김중장', 
-    address: '경기도 시흥시', 
-    targetJob: '데이터분석/사무자동화' 
-  };
-
+function ProgramExplorePage() {
+  // 1. 필요한 모든 상태(State) 장착 완료
   const [recommendations, setRecommendations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('hybrid');
-
-  const [searchFilters, setSearchFilters] = useState({
-    category: '전체', region: '전국', price: 'all', startDate: '', endDate: ''
-  });
+  const [searchFilters, setSearchFilters] = useState({ region: '전국', price: 'all' });
   const [sortOption, setSortOption] = useState('recommend');
+  const [activeTab, setActiveTab] = useState('recommend'); 
+  const [isLoading, setIsLoading] = useState(false);       
+  const [currentUser, setCurrentUser] = useState({         
+    userName: "김중장",
+    selectedJobs: ["인공지능학습데이터구축"]
+  });
 
-  const handleSearchChange = (e) => {
-    const { name, value } = e.target;
-    setSearchFilters(prev => ({ ...prev, [name]: value }));
+  const filteredRecommendations = recommendations;
+  const handleSearchChange = (e) => {};
+
+  // 🚨 2. 백엔드에 데이터를 달라고 조르는 핵심 함수
+  const fetchRecommendations = async () => {
+    setIsLoading(true); 
+    try {
+      console.log("백엔드로 데이터 요청 발사!"); // 콘솔 확인용
+      const response = await api.post('/api/explore', {
+        region: searchFilters.region,
+        price: searchFilters.price,
+        sortOption: sortOption
+      });
+      console.log("백엔드에서 데이터 도착:", response.data);
+      setRecommendations(response.data); 
+    } catch (error) {
+      console.error("통신 실패:", error);
+    } finally {
+      setIsLoading(false); 
+    }
   };
 
+  // 🚨 3. [가장 중요] 화면이 처음 렌더링될 때 딱 1번 자동으로 전화를 걸게 만드는 스위치
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setRecommendations(MOCK_RECOMMENDATIONS);
-      setIsLoading(false);
-    }, 600);
-  }, [currentUser.targetJob, currentUser.address]);
+    fetchRecommendations();
+  }, [sortOption]); // 정렬 조건이 바뀔 때마다 다시 요청
 
-  const filteredRecommendations = recommendations.filter(program => 
-    program.tags && program.tags.includes(activeTab)
-  );
+  // 🚨 새롭게 추가된 로직: 관심직무 우선 매칭 & 4개 컷오프 함수
+  const getTopKeywords = (keywords, userJobs) => {
+    if (!keywords || !Array.isArray(keywords)) return [];
+    
+    // 1. 유저 관심 직무와 단어가 겹치는 키워드 우선 추출
+    const matched = keywords.filter(kw => 
+      userJobs.some(job => job.includes(kw) || kw.includes(job))
+    );
+    
+    // 2. 겹치지 않는 나머지 키워드
+    const others = keywords.filter(kw => !matched.includes(kw));
+    
+    // 3. 매칭된 것을 맨 앞에 세우고, 나머지를 이어붙인 뒤 딱 4개만 잘라서 반환
+    return [...matched, ...others].slice(0, 4);
+  };
+
+  // 검색 버튼용
+  const handleSearch = () => {
+    fetchRecommendations();
+  };
 
   return (
     <div className="explore-page-container">
@@ -136,7 +127,7 @@ function ProgramExplorePage({ user }) {
                   </p>
 
                   <div className="keyword-tags">
-                    {program.keywords.map((kw, idx) => (
+                    {getTopKeywords(program.keywords, currentUser.selectedJobs).map((kw, idx) => (
                       <span key={idx} className="tag">#{kw}</span>
                     ))}
                   </div>
@@ -204,6 +195,29 @@ function ProgramExplorePage({ user }) {
             필터를 적용하여 새로운 교육을 탐색해 보세요.
         </div>
       </section>
+    
+    {/* 4. MOCK_RECOMMENDATIONS 대신 진짜 recommendations를 화면에 뿌립니다 */}
+      <div className="program-list">
+        {recommendations.length > 0 ? (
+          recommendations.map((program) => (
+            <div key={program.id} className="program-card">
+              <h3>{program.title}</h3>
+              <p>{program.institution}</p>
+              <p>{program.region}</p>
+              <p>{program.isFree ? "전액 무료" : `${program.cost}원`}</p>
+              
+              {/* 5대 키워드 출력 부분 */}
+              <div className="keywords">
+                {program.keywords.map((kw, i) => <span key={i}>#{kw} </span>)}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>로딩 중이거나 추천할 프로그램이 없습니다.</p>
+        )}
+      </div>
+      {/* 🚨 지도 컴포넌트는 리스트가 완벽히 출력될 때까지 임시 주석 처리! */}
+      {/* <KakaoMap data={recommendations} /> */}
     </div>
   );
 }
