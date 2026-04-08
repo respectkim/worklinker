@@ -170,3 +170,64 @@
     font-size: 15px;
   }
 }
+
+.success-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.success-delete-btn {
+  border: none;
+  background: #ef4444;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.success-delete-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.success-delete-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.success-comment-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.success-comment-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.success-comment-delete-btn {
+  border: none;
+  background: #f3f4f6;
+  color: #111827;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.success-comment-delete-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.success-comment-delete-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+}

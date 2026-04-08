@@ -17,7 +17,6 @@ function Router() {
     <Routes>
       {/* 랜딩 & 인증 */}
       <Route path="/" element={<Main />} />
-      <Route path='/success' element={<Success/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

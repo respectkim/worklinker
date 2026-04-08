@@ -977,7 +977,11 @@ section {
   flex-shrink: 0;
 }
 
-
+.nav-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
 
 @media (max-width: 1280px) {
   .dashboard-grid {

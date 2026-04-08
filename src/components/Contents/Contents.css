@@ -190,3 +190,44 @@
   flex-direction: column;
   height: 100%; /* 카드 높이를 그리드 칸에 맞춤 */
 }
+
+
+.contents-user-box {
+  margin-top: 20px;
+}
+
+.contents-user-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+.contents-preference-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contents-pref-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.contents-pref-btn.active {
+  background: #334155;
+  color: #fff;
+  border-color: #334155;
+}
+
+.contents-preference-error {
+  margin-top: 10px;
+  color: #ef4444;
+  font-size: 14px;
+}
