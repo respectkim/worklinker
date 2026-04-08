@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Star, Loader2, PlayCircle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Contents.css';
+import api from '../../api/api';
 
 const Contents = () => {
   const [query, setQuery] = useState('중장년 재취업 교육');
@@ -11,12 +12,19 @@ const Contents = () => {
   const [order, setOrder] = useState('relevance');
   const [selectedVideo, setSelectedVideo] = useState(null);
 
-  // 페이지네이션 관련
+  const [user, setUser] = useState(null);
+  const [preferences, setPreferences] = useState([]);
+  const [preferenceError, setPreferenceError] = useState('');
+  const [selectedPreference, setSelectedPreference] = useState('전체');
+
+  // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const pagePerBlock = 10;
 
   const fetchVideos = async (searchQuery, currentOrder) => {
+    if (!searchQuery.trim()) return;
+
     setIsLoading(true);
     setCurrentPage(1);
     try{
@@ -26,6 +34,7 @@ const Contents = () => {
       const searchUrl1 = `http://13.124.46.84:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}`;
       const searchRes1 = await fetch(searchUrl1);
       const searchData1 = await searchRes1.json();
+
       combinedItems = [...(searchData1.items || [])];
 
       // 다음 페이지가 있다면 추가 검색
@@ -33,6 +42,7 @@ const Contents = () => {
         const searchUrl2 = `http://13.124.46.84:3001/api/youtube/search?q=${encodeURIComponent(searchQuery)}&order=${currentOrder}&pageToken=${searchData1.nextPageToken}`;
         const searchRes2 = await fetch(searchUrl2);
         const searchData2 = await searchRes2.json();
+
         combinedItems = [...combinedItems, ...(searchData2.items || [])];
       }
 
@@ -46,9 +56,14 @@ const Contents = () => {
           const statsUrl = `http://13.124.46.84:3001/api/youtube/videos?id=${chunkIds}`;
           const statsRes = await fetch(statsUrl);
           const statsData = await statsRes.json();
-          finalVideosWithStats = [...finalVideosWithStats, ...(statsData.items || [])];
+
+          finalVideosWithStats = [
+            ...finalVideosWithStats,
+            ...(statsData.items || []),
+          ];
         }
       }
+
       setAllVideos(finalVideosWithStats);
     } catch (error){
       console.error('유튜브 데이터 로드 실패', error);
@@ -57,8 +72,79 @@ const Contents = () => {
     }
   };
 
-  useEffect(() => { fetchVideos(query, order); }, [order]);
-  const handleSearch = () => fetchVideos(query, order);
+  useEffect(() => {
+    const savedUser = localStorage.getItem('worklinker_user');
+    const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+    setUser(parsedUser);
+
+    const fetchPreferences = async () => {
+      if (!parsedUser?.id) {
+        setPreferenceError('로그인 정보가 없습니다.');
+        fetchVideos('중장년 재취업 교육', order);
+        return;
+      }
+
+      try {
+        const res = await api.get(`/auth/user/${parsedUser.id}/preferences`);
+
+        if (!res.data.ok) {
+          throw new Error(res.data.error || '관심 직무 정보를 불러오지 못했습니다.');
+        }
+
+        const jobs = res.data.preferences || [];
+        setPreferences(jobs);
+
+        if (jobs.length > 0) {
+          const firstQuery = `${jobs[0]} 교육`;
+          setSelectedPreference(jobs[0]);
+          setQuery(firstQuery);
+          fetchVideos(firstQuery, order);
+        } else {
+          fetchVideos('중장년 재취업 교육', order);
+        }
+      } catch (err) {
+        console.error('선호 직무 조회 실패:', err);
+        setPreferenceError(
+          err.response?.data?.error || err.message || '관심 직무 정보를 불러오지 못했습니다.'
+        );
+        fetchVideos('중장년 재취업 교육', order);
+      }
+    };
+
+    fetchPreferences();
+  }, []);
+
+  useEffect(() => {
+    if (selectedPreference === '전체') {
+      if (preferences.length > 0) {
+        const mergedQuery = `${preferences.join(' ')} 교육`;
+        setQuery(mergedQuery);
+        fetchVideos(mergedQuery, order);
+      }
+    } else {
+      const nextQuery = `${selectedPreference} 교육`;
+      setQuery(nextQuery);
+      fetchVideos(nextQuery, order);
+    }
+  }, [order]);
+
+  const handleSearch = () => {
+    fetchVideos(query, order);
+  };
+
+  const handlePreferenceClick = (job) => {
+    setSelectedPreference(job);
+
+    const nextQuery =
+      job === '전체'
+        ? preferences.length > 0
+          ? `${preferences.join(' ')} 교육`
+          : '중장년 재취업 교육'
+        : `${job} 교육`;
+
+    setQuery(nextQuery);
+    fetchVideos(nextQuery, order);
+  };
 
   const indexOfLastVideo = currentPage * itemsPerPage;
   const indexOfFirstVideo = indexOfLastVideo - itemsPerPage;
@@ -70,30 +156,76 @@ const Contents = () => {
   if (endPage > totalPages) endPage = totalPages;
 
   const pageNumbers = [];
-  for (let i = startPage; i <= endPage; i++) { pageNumbers.push(i); }
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
 
-  const handlePrevBlock = () => { if (startPage > 1) setCurrentPage(startPage - 1); };
-  const handleNextBlock = () => { if (endPage < totalPages) setCurrentPage(endPage + 1); };
+  const handlePrevBlock = () => {
+    if (startPage > 1) setCurrentPage(startPage - 1);
+  };
 
-  const formatCount = (count) => count ? parseInt(count).toLocaleString() : '0';
-  const formatDate = (dateString) => dateString ? dateString.split('T')[0] : '';
+  const handleNextBlock = () => {
+    if (endPage < totalPages) setCurrentPage(endPage + 1);
+  };
+
+  const formatCount = (count) =>
+    count ? parseInt(count, 10).toLocaleString() : '0';
+
+  const formatDate = (dateString) =>
+    dateString ? dateString.split('T')[0] : '';
 
   return (
     <div className="contents-container">
-      {/* 검색 영역 */}
       <section className="video-search-section">
         <div className="search-bar-wrapper">
-          <input 
-            type="text" 
-            placeholder="관심 있는 교육 내용을 검색해보세요" 
-            value={query} 
-            onChange={(e) => setQuery(e.target.value)} 
+          <input
+            type="text"
+            placeholder="관심 있는 교육 내용을 검색해보세요"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="search-input"
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()} 
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
           <button className="search-submit-btn" onClick={handleSearch}>
             <Search size={24} color="#fff" />
           </button>
+        </div>
+
+        <div className="contents-user-box">
+          <h3 className="contents-user-title">
+            {user?.username ? `${user.username}님 맞춤 콘텐츠` : '맞춤 콘텐츠'}
+          </h3>
+
+          {preferences.length > 0 && (
+            <div className="contents-preference-tags">
+              <button
+                type="button"
+                className={`contents-pref-btn ${
+                  selectedPreference === '전체' ? 'active' : ''
+                }`}
+                onClick={() => handlePreferenceClick('전체')}
+              >
+                전체
+              </button>
+
+              {preferences.map((job) => (
+                <button
+                  key={job}
+                  type="button"
+                  className={`contents-pref-btn ${
+                    selectedPreference === job ? 'active' : ''
+                  }`}
+                  onClick={() => handlePreferenceClick(job)}
+                >
+                  {job}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {preferenceError && (
+            <p className="contents-preference-error">{preferenceError}</p>
+          )}
         </div>
       </section>
 
@@ -106,9 +238,9 @@ const Contents = () => {
           <>
             <div className="contents-header-row">
               <h2 className="contents-main-title">추천 교육 콘텐츠</h2>
-              <select 
-                value={order} 
-                onChange={(e) => setOrder(e.target.value)} 
+              <select
+                value={order}
+                onChange={(e) => setOrder(e.target.value)}
                 className="sort-dropdown"
               >
                 <option value="relevance">관련도순</option>
@@ -120,31 +252,43 @@ const Contents = () => {
             <div className="contents-grid">
               {currentVideos.map((video) => {
                 const isFav = favorites.includes(video.id);
+
                 return (
-                  <motion.div 
-                    whileHover={{ y: -10 }} 
-                    className="content-card" 
+                  <motion.div
+                    whileHover={{ y: -10 }}
+                    className="content-card"
                     key={video.id}
                   >
-                    <div className="video-thumbnail-box" onClick={() => setSelectedVideo(video.id)}>
-                      <img src={video.snippet.thumbnails.medium.url} alt="thumbnail" />
-                      <button 
-                        className="fav-star-btn" 
+                    <div
+                      className="video-thumbnail-box"
+                      onClick={() => setSelectedVideo(video.id)}
+                    >
+                      <img
+                        src={video.snippet.thumbnails.medium.url}
+                        alt="thumbnail"
+                      />
+
+                      <button
+                        className="fav-star-btn"
                         onClick={(e) => {
                           e.stopPropagation();
+
                           if (isFav) {
-                            setFavorites(favorites.filter(id => id !== video.id));
+                            setFavorites(
+                              favorites.filter((id) => id !== video.id)
+                            );
                           } else {
                             setFavorites([...favorites, video.id]);
                           }
                         }}
                       >
-                        <Star 
-                          size={24} 
-                          color={isFav ? "#fbbf24" : "#fff"} 
-                          fill={isFav ? "#fbbf24" : "none"} 
+                        <Star
+                          size={24}
+                          color={isFav ? '#fbbf24' : '#fff'}
+                          fill={isFav ? '#fbbf24' : 'none'}
                         />
                       </button>
+
                       <div className="play-icon-overlay">
                         <PlayCircle size={50} color="#fff" />
                       </div>
@@ -163,16 +307,20 @@ const Contents = () => {
               })}
             </div>
 
-            {/* 페이지네이션 */}
             {totalPages > 0 && (
               <div className="pagination-container">
-                <button onClick={handlePrevBlock} disabled={startPage === 1} className="nav-arrow">
+                <button
+                  onClick={handlePrevBlock}
+                  disabled={startPage === 1}
+                  className="nav-arrow"
+                >
                   &lt; 이전
                 </button>
+
                 <div className="page-nums">
-                  {pageNumbers.map(num => (
-                    <button 
-                      key={num} 
+                  {pageNumbers.map((num) => (
+                    <button
+                      key={num}
                       onClick={() => setCurrentPage(num)}
                       className={`num-btn ${currentPage === num ? 'active' : ''}`}
                     >
@@ -180,7 +328,12 @@ const Contents = () => {
                     </button>
                   ))}
                 </div>
-                <button onClick={handleNextBlock} disabled={endPage === totalPages} className="nav-arrow">
+
+                <button
+                  onClick={handleNextBlock}
+                  disabled={endPage === totalPages}
+                  className="nav-arrow"
+                >
                   다음 &gt;
                 </button>
               </div>
@@ -189,18 +342,28 @@ const Contents = () => {
         )}
       </main>
 
-      {/* 모달 */}
       {selectedVideo && (
-        <div className="video-modal-overlay" onClick={() => setSelectedVideo(null)}>
-          <div className="video-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-x" onClick={() => setSelectedVideo(null)}>
+        <div
+          className="video-modal-overlay"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <div
+            className="video-modal-box"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal-close-x"
+              onClick={() => setSelectedVideo(null)}
+            >
               <X size={32} color="#fff" />
             </button>
             <iframe
-              width="100%" height="100%"
+              width="100%"
+              height="100%"
               src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1`}
               title="YouTube video player"
-              frameBorder="0" allowFullScreen
+              frameBorder="0"
+              allowFullScreen
             ></iframe>
           </div>
         </div>
