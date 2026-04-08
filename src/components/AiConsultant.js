@@ -14,7 +14,7 @@ const QUICK_QUESTIONS = [
 ];
 
 async function fetchClaude(messages) {
-  const response = await fetch('http://localhost:3001/api/chat', {
+  const response = await fetch('http://13.124.46.84:3001/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
