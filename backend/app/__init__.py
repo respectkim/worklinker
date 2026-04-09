@@ -36,17 +36,18 @@ def create_app2():
 
     @app.route('/', methods=['GET', 'POST'])
     def home():
-        # 리액트의 index.html 파일로 첫 페이지 응답
-        return send_from_directory(app.static_folder, 'index.html')
-    
-    # 리액트 라우터 대응
-    @app.route('/<path:path>')
+         # React의 index.html 파일로 첫페이지 응답
+        return send_from_directory(app.static_folder, "index.html")
+
+    # React Router 대응
+    @app.route("/<path:path>")
     def serve_static(path):
         file_path = os.path.join(app.static_folder, path)
 
         if os.path.exists(file_path):
             return send_from_directory(app.static_folder, path)
         else:
-            return send_from_directory(app.static_folder, 'index.html')
-        
+            return send_from_directory(app.static_folder, "index.html")
+
+               
     return app

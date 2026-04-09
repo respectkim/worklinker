@@ -9,9 +9,20 @@ export default function CommonHeader() {
 
   useEffect(() => {
     const savedUser = localStorage.getItem('worklinker_user');
-    setUser(savedUser ? JSON.parse(savedUser) : null);
-  }, [location.pathname]);
+  
+  if (!savedUser || savedUser === 'undefined' || savedUser === 'null') {
+    setUser(null);
+    return;
+  }
 
+  try {
+    setUser(JSON.parse(savedUser));
+  } catch (error) {
+    console.error('worklinker_user 파싱 실패:', error);
+    localStorage.removeItem('worklinker_user');
+    setUser(null);
+  }
+}, [location.pathname]);
   const moveToSection = (sectionId) => {
     if (location.pathname === '/') {
       const el = document.getElementById(sectionId);

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.utils.db import get_connection
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
+auth_bp = Blueprint("auth", __name__)
 
 
 @auth_bp.route("/check-username", methods=["POST"])
@@ -193,28 +193,30 @@ def register():
             conn.close()
 
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/login", methods=["POST", "OPTIONS"])
 def login():
+    if request.method == "OPTIONS":
+        return jsonify({"ok": True}), 200
+
     conn = None
     cursor = None
 
     try:
         data = request.get_json() or {}
-
         username = (data.get("username") or "").strip()
         password = (data.get("password") or "").strip()
 
         if not username or not password:
             return jsonify({
                 "ok": False,
-                "error": "username과 password는 필수입니다."
+                "error": "아이디와 비밀번호를 입력해주세요."
             }), 400
 
         conn = get_connection()
         cursor = conn.cursor()
 
         sql = """
-            SELECT id, username, email, password_hash, age_group, region
+            SELECT id, username, password_hash
             FROM users
             WHERE username = %s
         """
@@ -225,7 +227,7 @@ def login():
             return jsonify({
                 "ok": False,
                 "error": "존재하지 않는 아이디입니다."
-            }), 404
+            }), 401
 
         if not check_password_hash(user["password_hash"], password):
             return jsonify({
@@ -238,10 +240,7 @@ def login():
             "message": "로그인 성공",
             "user": {
                 "id": user["id"],
-                "username": user["username"],
-                "email": user["email"],
-                "age_group": user["age_group"],
-                "region": user["region"]
+                "username": user["username"]
             }
         }), 200
 
