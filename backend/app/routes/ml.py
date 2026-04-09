@@ -1,16 +1,7 @@
-from flask import Blueprint, jsonify, request
-from werkzeug.security import generate_password_hash, check_password_hash
-from app.utils.db import get_connection
 
-ml_bp = Blueprint("ml", __name__)
-
-
-@ml_bp.route('/aaaa', methods = ['POST', 'OPTIONS'])
-def aaa():
-    return 'aaa'
 
 from kakao_utils import get_coords # 기존 카카오 함수
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 
 # 🚨 [새로 추가된 라이브러리] AI 추천 엔진용
@@ -19,6 +10,13 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import math
 import os
+
+ml_bp = Blueprint("ml", __name__)
+
+
+@ml_bp.route('/aaaa', methods = ['POST', 'OPTIONS'])
+def aaa():
+    return 'aaa'
 
 app = Flask(__name__)
 CORS(app)
@@ -57,24 +55,7 @@ except Exception as e:
 # =====================================================================
 
 
-# ---------------------------------------------------------------------
-# 기존 API 1: 아이디 중복 체크
-# ---------------------------------------------------------------------
-@ml_bp.route('/check-id', methods=['POST', 'OPTIONS'])
-def check_id():
-    data = request.get_json()
-    user_id = data.get('id')
-
-    if not user_id:
-        return jsonify({"status": "error", "message": "아이디가 누락되었습니다."}), 400
-    
-    existing_users = ['admin', 'test', 'manager'] # 임시 가짜 DB
-    
-    if user_id in existing_users:
-        return jsonify({"status": "duplicate", "message": "이미 사용 중인 아이디입니다."})
-    else:
-        return jsonify({"status": "available", "message": "사용 가능한 아이디입니다."})
-    
+   
 
 # ---------------------------------------------------------------------
 # 기존 API 2: 회원가입 및 카카오 좌표 변환
@@ -175,4 +156,4 @@ def explore_programs():
     return jsonify(final_results)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

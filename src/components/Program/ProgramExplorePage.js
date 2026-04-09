@@ -27,13 +27,13 @@ function ProgramExplorePage() {
     // setIsLoading(true); 
     try {
       console.log("백엔드로 데이터 요청 발사!"); // 콘솔 확인용
-      const response = await api.post('/api/explore', {
+      const response = await api.post('/ml/explore', {
         region: searchFilters.region,
         price: searchFilters.price,
         sortOption: sortOption
       });
       console.log("백엔드에서 데이터 도착:", response.data);
-      // setRecommendations(response.data); 
+      setRecommendations(response.data); 
     } catch (error) {
       console.error("통신 실패:", error);
     } finally {
