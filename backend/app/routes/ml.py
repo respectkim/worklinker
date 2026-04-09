@@ -1,3 +1,14 @@
+from flask import Blueprint, jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.utils.db import get_connection
+
+ml_bp = Blueprint("ml", __name__)
+
+
+@ml_bp.route('/aaaa', methods = ['POST', 'OPTIONS'])
+def aaa():
+    return 'aaa'
+
 from kakao_utils import get_coords # 기존 카카오 함수
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -49,7 +60,7 @@ except Exception as e:
 # ---------------------------------------------------------------------
 # 기존 API 1: 아이디 중복 체크
 # ---------------------------------------------------------------------
-@app.route('/api/check-id', methods=['POST'])
+@ml_bp.route('/check-id', methods=['POST', 'OPTIONS'])
 def check_id():
     data = request.get_json()
     user_id = data.get('id')
@@ -68,7 +79,7 @@ def check_id():
 # ---------------------------------------------------------------------
 # 기존 API 2: 회원가입 및 카카오 좌표 변환
 # ---------------------------------------------------------------------
-@app.route('/api/signup', methods=['POST'])
+@ml_bp.route('/signup', methods=['POST', 'OPTIONS'])
 def signup():
     data = request.get_json()
     address = data.get('region')
@@ -82,14 +93,12 @@ def signup():
 
 
 
-@app.route('/api/aaaa', methods = ['POST'])
-def aaa():
-    return 'aaa'
+
 # =====================================================================
 # 🚨 [핵심 추가 2] 추천 엔진 API 라우터
 # 프론트엔드(ProgramExplorePage.js)에서 호출하는 주소입니다.
 # =====================================================================
-@app.route('/api/explore', methods=['POST'])
+@ml_bp.route('/explore', methods=['POST', 'OPTIONS'])
 def explore_programs():
 
     # 방어로직:JSON 데이터가 없거나 잘못됐을때 뻗지 않도록 처리

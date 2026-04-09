@@ -10,16 +10,21 @@ function ProgramExplorePage() {
   const [activeTab, setActiveTab] = useState('recommend'); 
   const [isLoading, setIsLoading] = useState(false);       
   const [currentUser, setCurrentUser] = useState({         
-    userName: "김중장",
-    selectedJobs: ["인공지능학습데이터구축"]
+    name: "김중장",
+    targetJob: ["인공지능학습데이터구축"],
+    address: '서울',
+    selectedJobs: ['인공지능학습데이터구축']
   });
 
   const filteredRecommendations = recommendations;
-  const handleSearchChange = (e) => {};
+  const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setSearchFilters(prev => ({ ...prev, [name]: value }));
+  };
 
   // 🚨 2. 백엔드에 데이터를 달라고 조르는 핵심 함수
   const fetchRecommendations = async () => {
-    setIsLoading(true); 
+    // setIsLoading(true); 
     try {
       console.log("백엔드로 데이터 요청 발사!"); // 콘솔 확인용
       const response = await api.post('/api/explore', {
@@ -28,11 +33,11 @@ function ProgramExplorePage() {
         sortOption: sortOption
       });
       console.log("백엔드에서 데이터 도착:", response.data);
-      setRecommendations(response.data); 
+      // setRecommendations(response.data); 
     } catch (error) {
       console.error("통신 실패:", error);
     } finally {
-      setIsLoading(false); 
+      // setIsLoading(false); 
     }
   };
 
@@ -196,26 +201,6 @@ function ProgramExplorePage() {
         </div>
       </section>
     
-    {/* 4. MOCK_RECOMMENDATIONS 대신 진짜 recommendations를 화면에 뿌립니다 */}
-      <div className="program-list">
-        {recommendations.length > 0 ? (
-          recommendations.map((program) => (
-            <div key={program.id} className="program-card">
-              <h3>{program.title}</h3>
-              <p>{program.institution}</p>
-              <p>{program.region}</p>
-              <p>{program.isFree ? "전액 무료" : `${program.cost}원`}</p>
-              
-              {/* 5대 키워드 출력 부분 */}
-              <div className="keywords">
-                {program.keywords.map((kw, i) => <span key={i}>#{kw} </span>)}
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>로딩 중이거나 추천할 프로그램이 없습니다.</p>
-        )}
-      </div>
       {/* 🚨 지도 컴포넌트는 리스트가 완벽히 출력될 때까지 임시 주석 처리! */}
       {/* <KakaoMap data={recommendations} /> */}
     </div>
