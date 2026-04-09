@@ -34,14 +34,20 @@ function Login() {
         password: form.password,
       });
 
-      alert(res.data.message || '로그인 성공');
+     console.log('login response:', res.data);
 
+    if (res.data?.user) {
       localStorage.setItem('worklinker_user', JSON.stringify(res.data.user));
+      alert(res.data.message || '로그인 성공');
       navigate('/home');
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.error || '아이디 또는 비밀번호가 올바르지 않습니다.');
+    } else {
+      localStorage.removeItem('worklinker_user');
+      alert('로그인 응답에 user 정보가 없습니다.');
     }
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.error || '아이디 또는 비밀번호가 올바르지 않습니다.');
+  }
   };
 
   return (

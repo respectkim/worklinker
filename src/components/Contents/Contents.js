@@ -74,8 +74,18 @@ const Contents = () => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem('worklinker_user');
-    const parsedUser = savedUser ? JSON.parse(savedUser) : null;
-    setUser(parsedUser);
+    let parsedUser = null;
+
+    if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
+    try {
+      parsedUser = JSON.parse(savedUser);
+    } catch (error) {
+      console.error('worklinker_user 파싱 실패:', error);
+      localStorage.removeItem('worklinker_user');
+    }
+  }
+
+setUser(parsedUser);
 
     const fetchPreferences = async () => {
       if (!parsedUser?.id) {
