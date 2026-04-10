@@ -49,5 +49,11 @@ def create_app2():
         else:
             return send_from_directory(app.static_folder, "index.html")
 
+    # 브라우저 새로고침할때 404에러가 발생한다면.
+    # 리액트(React)와 같은 SPA를 플라스크(Flask)에서 호스팅할 때 새로고침하면 react-router를 하기전에 실제 /서브경로 폴더를 찾음. 없으니 404발생...
+    # API 경로가 아닌 모든 요청 중, 파일이 없는 경우 index.html을 반환
+    @app.errorhandler(404)
+    def not_found(e):
+        return send_from_directory(app.static_folder, "index.html")
                
     return app

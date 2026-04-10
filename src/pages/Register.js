@@ -213,7 +213,10 @@ function Register() {
       alert(res.data.message || '회원가입이 완료되었습니다!');
       navigate('/login');
     } catch (err) {
-      console.error(err);
+      console.error('회원가입 전체 에러:', err);
+      console.log('status:', err.response?.status);
+      console.log('response data:', err.response?.data);
+      console.log('response data text:', JSON.stringify(err.response?.data, null, 2));
       alert(err.response?.data?.error || '회원가입 실패');
     } finally {
       setSubmitting(false);

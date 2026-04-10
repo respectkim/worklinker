@@ -105,8 +105,7 @@ def register():
             WHERE category_name = %s
         """
 
-        job_ids = []
-        normalized_jobs = []
+        job_rows = []
 
         for job_name in selected_jobs:
             name = (job_name or "").strip()
@@ -126,8 +125,7 @@ def register():
                     "error": f"job_categories에 없는 직무입니다: {name}"
                 }), 400
 
-            job_ids.append(row["id"])
-            normalized_jobs.append(row["category_name"])
+            job_rows.append(row)
 
         password_hash = generate_password_hash(password)
 
@@ -154,20 +152,18 @@ def register():
         insert_pref_sql = """
             INSERT INTO user_job_preferences (
                 user_id,
-                level1_category_id,
-                level2_category_id,
-                level3_category_id,
-                raw_target_text
+                job_category_id,
+                preference_rank
             )
-            VALUES (%s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s)
         """
-        cursor.execute(insert_pref_sql, (
-            user_id,
-            job_ids[0],
-            job_ids[1],
-            job_ids[2],
-            ", ".join(normalized_jobs)
-        ))
+
+        for idx, job in enumerate(job_rows, start=1):
+            cursor.execute(insert_pref_sql, (
+                user_id,
+                job["id"],   # job_category_id
+                idx
+            ))
 
         conn.commit()
 
@@ -180,7 +176,7 @@ def register():
     except Exception as e:
         if conn:
             conn.rollback()
-
+        print("register error:", repr(e))
         return jsonify({
             "ok": False,
             "error": str(e)
@@ -192,12 +188,11 @@ def register():
         if conn:
             conn.close()
 
-
 @auth_bp.route("/login", methods=["POST", "OPTIONS"])
 def login():
     if request.method == "OPTIONS":
         return jsonify({"ok": True}), 200
-
+    
     conn = None
     cursor = None
 
@@ -229,6 +224,7 @@ def login():
                 "error": "존재하지 않는 아이디입니다."
             }), 401
 
+        # user[2] = password_hash
         if not check_password_hash(user["password_hash"], password):
             return jsonify({
                 "ok": False,
@@ -256,7 +252,6 @@ def login():
         if conn:
             conn.close()
 
-
 @auth_bp.route("/user/<int:user_id>/preferences", methods=["GET"])
 def get_user_preferences(user_id):
     conn = None
@@ -269,39 +264,28 @@ def get_user_preferences(user_id):
         sql = """
             SELECT
                 ujp.user_id,
-                c1.category_name AS level1_name,
-                c2.category_name AS level2_name,
-                c3.category_name AS level3_name,
-                ujp.raw_target_text
+                ujp.preference_rank,
+                jc.category_name AS job_name
             FROM user_job_preferences ujp
-            LEFT JOIN job_categories c1
-                ON ujp.level1_category_id = c1.id
-            LEFT JOIN job_categories c2
-                ON ujp.level2_category_id = c2.id
-            LEFT JOIN job_categories c3
-                ON ujp.level3_category_id = c3.id
+            JOIN job_categories jc
+                ON ujp.job_category_id = jc.id
             WHERE ujp.user_id = %s
+            ORDER BY ujp.preference_rank ASC
         """
         cursor.execute(sql, (user_id,))
-        row = cursor.fetchone()
+        rows = cursor.fetchall()
 
-        if not row:
+        if not rows:
             return jsonify({
                 "ok": False,
                 "error": "직무 선호 정보가 없습니다."
             }), 404
 
-        preferences = [
-            row["level1_name"],
-            row["level2_name"],
-            row["level3_name"]
-        ]
-        preferences = [item for item in preferences if item]
+        preferences = [row["job_name"] for row in rows if row["job_name"]]
 
         return jsonify({
             "ok": True,
-            "preferences": preferences,
-            "raw_target_text": row["raw_target_text"]
+            "preferences": preferences
         }), 200
 
     except Exception as e:

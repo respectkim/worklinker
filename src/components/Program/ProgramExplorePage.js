@@ -5,15 +5,14 @@ import './ProgramExplorePage.css';
 function ProgramExplorePage() {
   // 1. 필요한 모든 상태(State) 장착 완료
   const [recommendations, setRecommendations] = useState([]);
-  const [searchFilters, setSearchFilters] = useState({ region: '전국', price: 'all' });
   const [sortOption, setSortOption] = useState('recommend');
   const [activeTab, setActiveTab] = useState('recommend'); 
   const [isLoading, setIsLoading] = useState(false);       
-  const [currentUser, setCurrentUser] = useState({         
-    name: "김중장",
-    targetJob: ["인공지능학습데이터구축"],
-    address: '서울',
-    selectedJobs: ['인공지능학습데이터구축']
+  const [currentUser, setCurrentUser]= useState(null);
+  const [searchFilters, setSearchFilters]= useState({
+    category:"전체",
+    region:"전국",
+    price:"all",
   });
 
   const filteredRecommendations = recommendations;
@@ -24,48 +23,95 @@ function ProgramExplorePage() {
 
   // 🚨 2. 백엔드에 데이터를 달라고 조르는 핵심 함수
   const fetchRecommendations = async () => {
-    // setIsLoading(true); 
-    try {
-      console.log("백엔드로 데이터 요청 발사!"); // 콘솔 확인용
-      const response = await api.post('/ml/explore', {
-        region: searchFilters.region,
-        price: searchFilters.price,
-        sortOption: sortOption
-      });
-      console.log("백엔드에서 데이터 도착:", response.data);
-      setRecommendations(response.data); 
-    } catch (error) {
-      console.error("통신 실패:", error);
-    } finally {
-      // setIsLoading(false); 
+    if (!currentUser?.selectedJobs?.length) {
+      setRecommendations([]);
+      return;
     }
-  };
 
-  // 🚨 3. [가장 중요] 화면이 처음 렌더링될 때 딱 1번 자동으로 전화를 걸게 만드는 스위치
+  setIsLoading(true);
+  try {
+    const response = await api.post('/ml/explore', {
+      userId: currentUser.id,
+      selectedJobs: currentUser.selectedJobs,
+      region: searchFilters.region,
+      category: searchFilters.category,
+      price: searchFilters.price,
+      sortOption,
+      mode: activeTab,
+    });
+
+    setRecommendations(response.data.recommendations || []);
+  } catch (error) {
+    console.error('추천 교육 통신 실패:', error);
+    setRecommendations([]);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   useEffect(() => {
-    fetchRecommendations();
-  }, [sortOption]); // 정렬 조건이 바뀔 때마다 다시 요청
+    const bootstrap = async () => {
+      const savedUser = localStorage.getItem('worklinker_user');
 
-  // 🚨 새롭게 추가된 로직: 관심직무 우선 매칭 & 4개 컷오프 함수
-  const getTopKeywords = (keywords, userJobs) => {
-    if (!keywords || !Array.isArray(keywords)) return [];
-    
-    // 1. 유저 관심 직무와 단어가 겹치는 키워드 우선 추출
-    const matched = keywords.filter(kw => 
-      userJobs.some(job => job.includes(kw) || kw.includes(job))
+      if (!savedUser || savedUser === 'undefined' || savedUser === 'null') {
+        setCurrentUser(null);
+        return;
+      }
+
+      try {
+        const parsedUser = JSON.parse(savedUser);
+
+        const res = await api.get(`/auth/user/${parsedUser.id}/preferences`);
+
+        if (!res.data.ok) {
+          throw new Error(res.data.error || '직무 선호 정보를 불러오지 못했습니다.');
+        }
+
+        const jobs = res.data.preferences || [];
+
+        setCurrentUser({
+          id: parsedUser.id,
+          name: parsedUser.username,
+          targetJob: jobs,
+          selectedJobs: jobs,
+          address: searchFilters.region || '전국',
+        });
+      } catch (error) {
+        console.error('추천교육 초기화 실패:', error);
+        localStorage.removeItem('worklinker_user');
+        setCurrentUser(null);
+      }
+    };
+
+    bootstrap();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser?.selectedJobs?.length) {
+      fetchRecommendations();
+    }
+  }, [currentUser, sortOption, activeTab]);
+
+    const getTopKeywords = (keywords, userJobs) => {
+      if (!keywords || !Array.isArray(keywords)) return [];
+
+    const matched = keywords.filter((kw) =>
+      userJobs.some((job) => job.includes(kw) || kw.includes(job))
     );
-    
-    // 2. 겹치지 않는 나머지 키워드
-    const others = keywords.filter(kw => !matched.includes(kw));
-    
-    // 3. 매칭된 것을 맨 앞에 세우고, 나머지를 이어붙인 뒤 딱 4개만 잘라서 반환
+
+    const others = keywords.filter((kw) => !matched.includes(kw));
+
     return [...matched, ...others].slice(0, 4);
   };
 
-  // 검색 버튼용
-  const handleSearch = () => {
-    fetchRecommendations();
+    const handleSearch = () => {
+      fetchRecommendations();
   };
+
+    const handlePreferenceClick = (tabKey) => {
+      setActiveTab(tabKey);
+  };
+
 
   return (
     <div className="explore-page-container">
@@ -73,9 +119,14 @@ function ProgramExplorePage() {
         <div className="user-context">
           <h2>맞춤 교육 프로그램 탐색</h2>
           <p>
-            <strong>{currentUser.name}</strong>님이 희망하시는 
-            <span className="highlight-text"> [{currentUser.targetJob}]</span> 직무와 
-            <span className="highlight-text"> [{currentUser.address}]</span> 인근의 교육을 분석했습니다.
+            <strong>{currentUser?.name || '사용자'}</strong>님이 희망하시는 
+            <span className="highlight-text">
+              {' '}
+              [{(currentUser?.targetJob || []).join(', ') || '관심 직무 없음'}]
+            </span>
+            {' '}직무와
+            <span className="highlight-text"> [{searchFilters.region}]</span>
+            {' '}조건을 기준으로 교육을 분석했습니다.
           </p>
         </div>
       </header>
@@ -132,9 +183,13 @@ function ProgramExplorePage() {
                   </p>
 
                   <div className="keyword-tags">
-                    {getTopKeywords(program.keywords, currentUser.selectedJobs).map((kw, idx) => (
-                      <span key={idx} className="tag">#{kw}</span>
-                    ))}
+                    {getTopKeywords(program.keywords, currentUser?.selectedJobs || []).map(
+                      (kw, idx) => (
+                        <span key={idx} className="tag">
+                          #{kw}
+                        </span>
+                      )
+                    )}
                   </div>
 
                   <div className="card-action">
@@ -188,17 +243,24 @@ function ProgramExplorePage() {
         </div>
         
         <div className="results-header">
-            <span className="results-count">총 <strong>0</strong>개의 교육이 있습니다.</span>
-            <select className="sort-select" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+            <span className="results-count">
+             총 <strong>{recommendations.length}</strong>개의 교육이 있습니다.
+          </span>
+
+          <select
+            className="sort-select"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
               <option value="recommend">✨ AI 추천순</option>
               <option value="price_asc">💸 금액 낮은 순</option>
               <option value="date_asc">📅 시작일 빠른 순</option>
             </select>
         </div>
 
-        <div className="empty-state">
+        {/* <div className="empty-state">
             필터를 적용하여 새로운 교육을 탐색해 보세요.
-        </div>
+        </div> */}
       </section>
     
       {/* 🚨 지도 컴포넌트는 리스트가 완벽히 출력될 때까지 임시 주석 처리! */}

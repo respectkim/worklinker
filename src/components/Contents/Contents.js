@@ -247,7 +247,7 @@ setUser(parsedUser);
         ) : (
           <>
             <div className="contents-header-row">
-              <h2 className="contents-main-title">추천 교육 콘텐츠</h2>
+              <h2 className="contents-main-title">추천 영상</h2>
               <select
                 value={order}
                 onChange={(e) => setOrder(e.target.value)}
